@@ -19,13 +19,11 @@
     </div>
 
     @Html.Raw(Model.Content);
+    <div class="message-box">
+        <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
 
-    <form asp-action="SendMessage" method="post">
-        <div class="message-box">
-            <textarea asp-for="TxtMessage" class="message-input" placeholder="Type message..."></textarea>
-            <button type="submit" class="message-submit" value="Submit">Send</button>
-        </div>
-    </form>
+        <button type="submit" class="message-submit" value="Submit">Send</button>
+    </div>
 </div>
 
 <div class="bg"></div>

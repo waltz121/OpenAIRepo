@@ -22,9 +22,9 @@ namespace ChatBot.Controllers
         }
 
         [HttpPost]
-        public IActionResult SendMessage([Bind("Content,TxtMessage")] ChatViewModel chatvm)
+        public JsonResult SendMessage([FromBody]ChatViewModel chatvm)
         {
-            return RedirectToAction("Index");
+            return Json(new { message = "" });
         }
 
         public IActionResult Privacy()
