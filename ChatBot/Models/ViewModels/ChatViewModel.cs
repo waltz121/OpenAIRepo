@@ -9,5 +9,6 @@
         }
         public string Content { get; set; }
         public string TxtMessage { get; set; }
+
     }
 }

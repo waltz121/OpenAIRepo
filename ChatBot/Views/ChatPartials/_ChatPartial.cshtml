@@ -15,13 +15,15 @@
     </div>
 
     @Html.Raw(Model.Content);
-   @*  <div class="messages">
-        <div class="messages-content">
+
+    @using (Html.BeginForm("SendMessage", "Home", FormMethod.Post))
+    {
+        <div class="message-box">
+            @* <textarea type="text" class="message-input" placeholder="Type message..."></textarea> *@
+            @Html.TextAreaFor(model => model.TxtMessage, new { @class = "message-input", @placeholder = "Type message..." })
+            <button type="submit" class="message-submit" value="Submit">Send</button>
         </div>
-    </div> *@
-    <div class="message-box">
-        <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
-        <button type="submit" class="message-submit">Send</button>
-    </div>
+    }
+
 
 </div>

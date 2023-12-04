@@ -19,7 +19,13 @@ namespace ChatBot.Controllers
         {
             ChatViewModel chatvm = new ChatViewModel();
             return View(chatvm);
-        }                
+        }
+
+        [HttpPost]
+        public IActionResult SendMessage([Bind("Content,TxtMessage")] ChatViewModel chatvm)
+        {
+            return RedirectToAction("Index");
+        }
 
         public IActionResult Privacy()
         {
