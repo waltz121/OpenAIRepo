@@ -1,4 +1,5 @@
 using ChatBot.Models;
+using ChatBot.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 
@@ -13,10 +14,12 @@ namespace ChatBot.Controllers
             _logger = logger;
         }
 
+        [HttpGet]
         public IActionResult Index()
         {
-            return View();
-        }
+            ChatViewModel chatvm = new ChatViewModel();
+            return View(chatvm);
+        }                
 
         public IActionResult Privacy()
         {
