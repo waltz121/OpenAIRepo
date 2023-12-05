@@ -37,16 +37,16 @@ function insertMessage() {
     if ($.trim(msg) == "") {
         return false;
     }
-    GetAiResponse();
+    
     $('<div class="message message-personal">' + msg + "</div>")
         .appendTo($(".mCSB_container"))
         .addClass("new");
     
     $(".message-input").val(null);
     updateScrollbar();
-    setTimeout(function () {
-        fakeMessage();
-    }, 1000 + Math.random() * 20 * 100);
+    
+    chatbotMessage();
+    
 }
 
 $(".message-submit").click(function () {
@@ -102,6 +102,26 @@ function fakeMessage() {
     }, 1000 + Math.random() * 20 * 100);
 }
 
+async function chatbotMessage() {
+    if ($(".message-input").val() != "") {
+        return false;
+    }
+    $(
+        '<div class="message loading new"><figure class="avatar"><img src="images/customer-service.svg" /></figure><span></span></div>'
+    ).appendTo($(".mCSB_container"));
+    updateScrollbar();
+    var response = await GetAiResponse();
+    $(".message.loading").remove();
+    $(
+        '<div class="message new"><figure class="avatar"><img src="images/customer-service.svg" /></figure>' +
+        response.message +
+        "</div>"
+    )
+        .appendTo($(".mCSB_container"))
+        .addClass("new");
+
+    updateScrollbar();
+}
 async function InitialMessage() {
     if ($(".message-input").val() != "") {
         return false;
@@ -124,7 +144,7 @@ async function InitialMessage() {
     i++;
 }
 
-function GetAiResponse() {
+async function GetAiResponse() {
     var clientMessage = $(".message-input").val();
     var currentContent = [];
 
@@ -133,24 +153,18 @@ function GetAiResponse() {
     for (var i = 0; i < Messages.length; i++) {
 
         if (Messages[i].className == "message new") {
-            currentContent.push({ role: "Assistant", content: Messages[i].innerText })
+            currentContent.push({ role: "assistant", content: Messages[i].innerText })
         } else {
             currentContent.push({ role: "user", content: Messages[i].innerText })
         }
     }
 
     var dataToSend = { Messages: currentContent, TxtMessage: clientMessage }
-    $.ajax({
+    return await $.ajax({
         type: "POST",
         url: "/Home/SendMessage",
         contentType: "application/json",
-        data: JSON.stringify(dataToSend),
-        success: function (response) {
-            console.log("Data sent successfully.", response);
-        },
-        error: function (error) {
-            console.error("Error sending data.", error);
-        }
+        data: JSON.stringify(dataToSend)
     })
 }
 

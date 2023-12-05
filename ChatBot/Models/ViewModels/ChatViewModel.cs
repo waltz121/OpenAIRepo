@@ -29,6 +29,18 @@ namespace ChatBot.Models.ViewModels
             return response.Choices[0].Message;                       
             
         }
+
+        public async Task<ChatCompletionResponseDTO> GetBotReply()
+        {
+            ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
+            requestBody.Messages = Messages.ToArray();
+
+            requestBody.Model = "gpt-3.5-turbo";
+
+            var response = await OpenAiRepo.ChatCompletion(requestBody);
+
+            return response;
+        }
         
     }
 }

@@ -22,9 +22,10 @@ namespace ChatBot.Controllers
         }
 
         [HttpPost]
-        public JsonResult SendMessage([FromBody]ChatViewModel chatvm)
+        public async Task<JsonResult> SendMessage([FromBody]ChatViewModel chatvm)
         {
-            return Json(new { message = "" });
+            var reply = await chatvm.GetBotReply();
+            return Json(new { message = reply.Choices[0].Message.Content });
         }
 
         [HttpGet]
