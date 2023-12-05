@@ -1,6 +1,7 @@
 using ChatBot.Models;
 using ChatBot.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
+using OpenAiCore.OpenAiRepository.DTO;
 using System.Diagnostics;
 
 namespace ChatBot.Controllers
@@ -17,14 +18,23 @@ namespace ChatBot.Controllers
         [HttpGet]
         public IActionResult Index()
         {
-            ChatViewModel chatvm = new ChatViewModel();
-            return View(chatvm);
+            return View();
         }
 
         [HttpPost]
         public JsonResult SendMessage([FromBody]ChatViewModel chatvm)
         {
             return Json(new { message = "" });
+        }
+
+        [HttpGet]
+        public async Task<JsonResult> GetInitialChatViewModel()
+        {
+            ChatViewModel chatvm = new ChatViewModel();
+            MessagesDTO tpm = await chatvm.SetInitialMessage();
+            chatvm.Messages = new List<MessagesDTO>();
+            chatvm.Messages.Add(tpm);
+            return Json(chatvm);
         }
 
         public IActionResult Privacy()

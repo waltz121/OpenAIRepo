@@ -1,9 +1,6 @@
-﻿@using ChatBot.Models.ViewModels
-@{
+﻿@{
     ViewData["Title"] = "Home Page";
 }
-
-@model ChatViewModel
 
 @* @{
     await Html.RenderPartialAsync("/Views/ChatPartials/_ChatPartial.cshtml", Model);
@@ -18,7 +15,10 @@
         </figure>
     </div>
 
-    @Html.Raw(Model.Content);
+    <div class="messages">
+        <div class="messages-content">
+        </div>
+    </div>
     <div class="message-box">
         <textarea type="text" class="message-input" placeholder="Type message..."></textarea>
 

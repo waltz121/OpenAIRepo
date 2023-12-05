@@ -11,7 +11,7 @@ var $messages = $(".messages-content"),
 $(window).load(function () {
     $messages.mCustomScrollbar();
     setTimeout(function () {
-        fakeMessage();
+        InitialMessage();
     }, 100);
 });
 
@@ -41,7 +41,7 @@ function insertMessage() {
     $('<div class="message message-personal">' + msg + "</div>")
         .appendTo($(".mCSB_container"))
         .addClass("new");
-    setDate();
+    
     $(".message-input").val(null);
     updateScrollbar();
     setTimeout(function () {
@@ -96,16 +96,50 @@ function fakeMessage() {
         )
             .appendTo($(".mCSB_container"))
             .addClass("new");
-        setDate();
+        
         updateScrollbar();
         i++;
     }, 1000 + Math.random() * 20 * 100);
 }
 
+async function InitialMessage() {
+    if ($(".message-input").val() != "") {
+        return false;
+    }
+    $(
+        '<div class="message loading new"><figure class="avatar"><img src="images/customer-service.svg" /></figure><span></span></div>'
+    ).appendTo($(".mCSB_container"));
+    updateScrollbar();
+    var message = await GetInitialResponse();
+    $(".message.loading").remove();
+    $(
+        '<div class="message new"><figure class="avatar"><img src="images/customer-service.svg" /></figure>' +
+        message.messages[0].content +
+        "</div>"
+    )
+        .appendTo($(".mCSB_container"))
+        .addClass("new");
+
+    updateScrollbar();
+    i++;
+}
+
 function GetAiResponse() {
     var clientMessage = $(".message-input").val();
-    var currentContent = $(".messages")[0].innerHTML;
-    var dataToSend = { Content: currentContent, TxtMessage: clientMessage }
+    var currentContent = [];
+
+    var Messages = $("div.message.new");
+
+    for (var i = 0; i < Messages.length; i++) {
+
+        if (Messages[i].className == "message new") {
+            currentContent.push({ role: "Assistant", content: Messages[i].innerText })
+        } else {
+            currentContent.push({ role: "user", content: Messages[i].innerText })
+        }
+    }
+
+    var dataToSend = { Messages: currentContent, TxtMessage: clientMessage }
     $.ajax({
         type: "POST",
         url: "/Home/SendMessage",
@@ -117,5 +151,13 @@ function GetAiResponse() {
         error: function (error) {
             console.error("Error sending data.", error);
         }
+    })
+}
+
+async function GetInitialResponse() {
+    return await $.ajax({
+        type: "GET",
+        url: "/Home/GetInitialChatViewModel",
+        contentType: "application/json",       
     })
 }

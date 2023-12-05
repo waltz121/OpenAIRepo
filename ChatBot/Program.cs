@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc.Routing;
+using OpenAiCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -6,6 +7,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
+
+Config.Init("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");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
