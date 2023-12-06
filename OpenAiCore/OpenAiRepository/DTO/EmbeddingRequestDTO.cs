@@ -11,7 +11,7 @@ namespace OpenAiCore.OpenAiRepository.DTO
         public string Model { get; set; }
         
         [JsonPropertyName("input")]
-        public string Input { get; set; }
+        public List<string> Input { get; set; }
         
         [JsonPropertyName("encoding_format")]
         public string encoding_format { get; set; }

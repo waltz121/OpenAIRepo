@@ -66,7 +66,10 @@ namespace OpenAI.UnitTests
         {
             EmbeddingRequestDTO requestBody = new EmbeddingRequestDTO();
             requestBody.Model = "text-embedding-ada-002";
-            requestBody.Input = "The quick brown fox jumps over the lazy dog.";
+            requestBody.Input = new List<string>()
+            {
+                "Quick brown fox jumps over the lazy dog"
+            };
 
             Task.Run(async () =>
             {

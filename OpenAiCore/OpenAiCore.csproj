@@ -11,6 +11,7 @@
 
   <ItemGroup>
     <Folder Include="AzureOpenAi\Model\" />
+    <Folder Include="Files\" />
   </ItemGroup>
 
 </Project>
