@@ -60,48 +60,6 @@ $(window).on("keydown", function (e) {
     }
 });
 
-var Fake = [
-    "Hi there, I'm Fabio and you?",
-    "Nice to meet you",
-    "How are you?",
-    "Not too bad, thanks",
-    "What do you do?",
-    "That's awesome",
-    "Codepen is a nice place to stay",
-    "I think you're a nice person",
-    "Why do you think that?",
-    "Can you explain?",
-    "Anyway I've gotta go now",
-    "It was a pleasure chat with you",
-    "Time to make a new codepen",
-    "Bye",
-    ":)"
-];
-
-function fakeMessage() {
-    if ($(".message-input").val() != "") {
-        return false;
-    }
-    $(
-        '<div class="message loading new"><figure class="avatar"><img src="images/customer-service.svg" /></figure><span></span></div>'
-    ).appendTo($(".mCSB_container"));
-    updateScrollbar();
-
-    setTimeout(function () {
-        $(".message.loading").remove();
-        $(
-            '<div class="message new"><figure class="avatar"><img src="images/customer-service.svg" /></figure>' +
-            Fake[i] +
-            "</div>"
-        )
-            .appendTo($(".mCSB_container"))
-            .addClass("new");
-        
-        updateScrollbar();
-        i++;
-    }, 1000 + Math.random() * 20 * 100);
-}
-
 async function chatbotMessage() {
     if ($(".message-input").val() != "") {
         return false;
@@ -151,11 +109,12 @@ async function GetAiResponse() {
     var Messages = $("div.message.new");
 
     for (var i = 0; i < Messages.length; i++) {
-
-        if (Messages[i].className == "message new") {
-            currentContent.push({ role: "assistant", content: Messages[i].innerText })
-        } else {
-            currentContent.push({ role: "user", content: Messages[i].innerText })
+        if (Messages[i].innerText) {
+            if (Messages[i].className == "message new") {
+                currentContent.push({ role: "assistant", content: Messages[i].innerText })
+            } else {
+                currentContent.push({ role: "user", content: Messages[i].innerText })
+            }
         }
     }
 
