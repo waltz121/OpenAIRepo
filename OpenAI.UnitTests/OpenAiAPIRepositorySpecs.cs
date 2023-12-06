@@ -60,5 +60,18 @@ namespace OpenAI.UnitTests
                 var response = await OpenAiRepo.ChatCompletion(requestBody);
             }).GetAwaiter().GetResult();
         }
+        
+        [TestMethod]
+        public void Create_SimpleEmbeddingsSample()
+        {
+            EmbeddingRequestDTO requestBody = new EmbeddingRequestDTO();
+            requestBody.Model = "text-embedding-ada-002";
+            requestBody.Input = "The quick brown fox jumps over the lazy dog.";
+
+            Task.Run(async () =>
+            {
+                var response = await OpenAiRepo.CreateEmbeddings(requestBody);
+            }).GetAwaiter().GetResult();
+        }
     }
 }

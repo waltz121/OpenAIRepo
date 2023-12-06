@@ -42,5 +42,32 @@ namespace OpenAiCore.OpenAiRepository
 
             return responseDTO;
         }
+
+        public async Task<EmbeddingResponseDTO> CreateEmbeddings(EmbeddingRequestDTO requestDTO)
+        {
+            var url = _baseURL + "/embeddings";
+            var token = Config.OpenAI_ApiKey;
+            EmbeddingResponseDTO responseDTO;
+            
+            using (var client = new HttpClient())
+            {
+                var jsonBody = JsonSerializer.Serialize(requestDTO);
+                var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", Config.OpenAI_ApiKey);
+                HttpResponseMessage httpResponseMessage = await client.PostAsync(url, content);
+
+                if (httpResponseMessage.IsSuccessStatusCode)
+                {
+                    string responseString = await httpResponseMessage.Content.ReadAsStringAsync();
+                    responseDTO = JsonSerializer.Deserialize<EmbeddingResponseDTO>(responseString);
+                }
+                else
+                {
+                    responseDTO = new EmbeddingResponseDTO();
+                }
+            }
+
+            return responseDTO;
+        }
     }
 }
