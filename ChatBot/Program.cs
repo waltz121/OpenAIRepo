@@ -8,7 +8,7 @@ builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
 
-Config.Init("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");
+Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -16,10 +16,10 @@ namespace OpenAI.UnitTests
     {
         OpenAiAPIRepository OpenAiRepo;
         const string RawDataSet = @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\TextToCSV\Files\OpenAiDataset.csv";
-        const string OutputDataSet = @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv";
+        
         public EmbeddingsFileProcessSpecs()
         {
-            Config.Init("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");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
             OpenAiRepo = new OpenAiAPIRepository();
         }
 
@@ -63,13 +63,13 @@ namespace OpenAI.UnitTests
                 csv.AppendLine(formattedStr + "|" + embeddings);
                 responseCtr++;
             }
-            File.WriteAllText(OutputDataSet, csv.ToString());
+            File.WriteAllText(Config.OutputDataSet, csv.ToString());
         }
 
         [TestMethod]
         public void GetEmbeddings_FromCSVfile()
         {
-            var lines = File.ReadAllLines(OutputDataSet);
+            var lines = File.ReadAllLines(Config.OutputDataSet);
             var dataRecords = lines.Skip(1).Select(line =>
             {
                 var columns = line.Split("|");

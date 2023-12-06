@@ -16,9 +16,8 @@ namespace OpenAI.UnitTests
     public class OpenAiAPIRepositorySpecs
     {
         OpenAiAPIRepository OpenAiRepo;
-        const string OutputDataSet = @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv";
         public OpenAiAPIRepositorySpecs() {
-            Config.Init("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");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
             OpenAiRepo = new OpenAiAPIRepository();
         }
 
@@ -26,7 +25,7 @@ namespace OpenAI.UnitTests
         public void ChatCompletion()
         {
             ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
-            MessagesDTO[] messagesDTO = new MessagesDTO[]
+            List<MessagesDTO> messagesDTO = new List<MessagesDTO>
             {
                 new MessagesDTO() { Role = "user", Content = "Who won the world series in 2020?" },
                 new MessagesDTO() { Role = "assistant", Content = "The Los Angeles Dodgers won the World Series in 2020." },
@@ -47,7 +46,7 @@ namespace OpenAI.UnitTests
         public void ChatCompletion_LongReply()
         {
             ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
-            MessagesDTO[] messagesDTOs = new MessagesDTO[]
+            List<MessagesDTO> messagesDTOs = new List<MessagesDTO>
             {
                 new MessagesDTO() { Role = "system", Content = "You are a helpful Customer Service Assistant from Mercola Named Fabio. You greet the user and asks how you can assist them.As a Customer Service Assistant you have a cheerful and joyful personality it shows on your reply.Answer as clear, concise and succint as possible." },
                 new MessagesDTO() { Role = "assistant", Content = "Hello! How can I assist you today?" },
@@ -99,7 +98,7 @@ namespace OpenAI.UnitTests
 
             var QueryEmbeddings = response.Data[0].Embedding;
 
-            var lines = File.ReadAllLines(OutputDataSet);
+            var lines = File.ReadAllLines(Config.OutputDataSet);
             var dataRecords = lines.Skip(1).Select(line =>
             {
                 var columns = line.Split("|");

@@ -24,7 +24,7 @@ namespace ChatBot.Controllers
         [HttpPost]
         public async Task<JsonResult> SendMessage([FromBody]ChatViewModel chatvm)
         {
-            var reply = await chatvm.GetBotReply();
+            var reply = await chatvm.GetBotReply_WithContext();
             return Json(new { message = reply.Choices[0].Message.Content });
         }
 

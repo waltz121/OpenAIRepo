@@ -12,7 +12,7 @@ namespace OpenAiCore.OpenAiRepository.DTO
         [JsonPropertyName("max_tokens")]
         public int MaxTokens { get; set; } = 4000;
         [JsonPropertyName("messages")]
-        public MessagesDTO[] Messages { get; set; }
+        public List<MessagesDTO> Messages { get; set; }
         [JsonPropertyName("stream")]
         public bool Stream { get; set; } = false;
     }
