@@ -60,7 +60,7 @@ namespace OpenAiCore.OpenAiServices
                 rankings.Add(new EmbeddingRanking() { Relatedness = relatedness, Percent = (100 - (relatedness * 100)).ToString(), Text = row.text });
             }
 
-            var topRank = rankings.OrderBy(x => x.Relatedness).Take(5).ToList();
+            var topRank = rankings.OrderBy(x => x.Relatedness).Take(20).ToList();
 
             return topRank;
         }
