@@ -59,7 +59,7 @@ namespace OpenAI.UnitTests
             foreach (var row in dataRecords)
             {                       
                 string embeddings = JsonSerializer.Serialize( response.Data[responseCtr].Embedding);
-                var formattedStr = row.Text.Replace("|", " ");
+                var formattedStr = row.Text.Replace("|", "");
                 csv.AppendLine(formattedStr + "|" + embeddings);
                 responseCtr++;
             }
@@ -78,7 +78,7 @@ namespace OpenAI.UnitTests
                     text = columns[0],
                     embedding = JsonSerializer.Deserialize<List<float>>(columns[1])
                 };
-            }).ToList();
+            }).AsQueryable();
         }
     }
 }

@@ -1,10 +1,13 @@
-﻿using OpenAiCore;
+﻿using MathNet.Numerics;
+using OpenAiCore;
 using OpenAiCore.OpenAiRepository;
 using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace OpenAI.UnitTests
@@ -13,6 +16,7 @@ namespace OpenAI.UnitTests
     public class OpenAiAPIRepositorySpecs
     {
         OpenAiAPIRepository OpenAiRepo;
+        const string OutputDataSet = @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv";
         public OpenAiAPIRepositorySpecs() {
             Config.Init("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");
             OpenAiRepo = new OpenAiAPIRepository();
@@ -75,6 +79,47 @@ namespace OpenAI.UnitTests
             {
                 var response = await OpenAiRepo.CreateEmbeddings(requestBody);
             }).GetAwaiter().GetResult();
+        }
+
+        [TestMethod]
+        public void GetRelatednessFromCSVFile_To_SearchQuery()
+        {
+            EmbeddingRequestDTO requestBody = new EmbeddingRequestDTO();
+            EmbeddingResponseDTO response = new EmbeddingResponseDTO();
+            requestBody.Model = "text-embedding-ada-002";
+            requestBody.Input = new List<string>()
+            {
+                "What does having low vitamin D Means?"
+            };
+
+            Task.Run(async () =>
+            {
+                response = await OpenAiRepo.CreateEmbeddings(requestBody);
+            }).GetAwaiter().GetResult();
+
+            var QueryEmbeddings = response.Data[0].Embedding;
+
+            var lines = File.ReadAllLines(OutputDataSet);
+            var dataRecords = lines.Skip(1).Select(line =>
+            {
+                var columns = line.Split("|");
+                return new EmbeddingCSVDataFrame
+                {
+                    text = columns[0],
+                    embedding = JsonSerializer.Deserialize<List<float>>(columns[1])
+                };
+            }).ToList();
+            
+            List<EmbeddingRanking> rankings = new List<EmbeddingRanking>();
+
+            foreach(var row in dataRecords)
+            {                
+                var relatedness = Distance.Cosine(QueryEmbeddings.ToArray(), row.embedding.ToArray());
+                rankings.Add(new EmbeddingRanking() { Relatedness = relatedness, Percent = (100 - (relatedness * 100)).ToString(), Text = row.text  });
+            }
+
+            var topRank = rankings.OrderBy(x => x.Relatedness).Take(5).ToList();
+            
         }
     }
 }
