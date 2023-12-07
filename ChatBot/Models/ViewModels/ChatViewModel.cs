@@ -29,6 +29,7 @@ namespace ChatBot.Models.ViewModels
 
             requestBody.Model = "gpt-3.5-turbo";
             requestBody.Messages = messagesDTO;
+            requestBody.MaxTokens = 300;
 
             var response = await OpenAiRepo.ChatCompletion(requestBody);
 

@@ -42,8 +42,9 @@ namespace OpenAiCore.OpenAiServices
                 var columns = line.Split('|');
                 return new EmbeddingCSVDataFrame
                 {
-                    text = columns[0],
-                    embedding = JsonSerializer.Deserialize<List<float>>(columns[1])
+                    url = columns[0],
+                    text = columns[1],
+                    embedding = JsonSerializer.Deserialize<List<float>>(columns[2])
                 };
             }).ToList();
 
@@ -57,7 +58,7 @@ namespace OpenAiCore.OpenAiServices
             foreach (var row in dataRecords)
             {
                 var relatedness = Distance.Cosine(QueryEmbeddings.ToArray(), row.embedding.ToArray());
-                rankings.Add(new EmbeddingRanking() { Relatedness = relatedness, Percent = (100 - (relatedness * 100)).ToString(), Text = row.text });
+                rankings.Add(new EmbeddingRanking() { Relatedness = relatedness, Percent = (100 - (relatedness * 100)).ToString(), Text = row.text + ", sources: " + row.url });
             }
 
             var topRank = rankings.OrderBy(x => x.Relatedness).Take(20).ToList();
@@ -71,7 +72,10 @@ namespace OpenAiCore.OpenAiServices
             var CsvRecords = GetEmbeddedCSVData();
             var Rankings = GetRankings(CsvRecords, QueryEmbeddings);
 
-            string QueryMessage = "Use the below article to answer the question. " +
+            string QueryMessage = "Use the below article to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below" +
+                " Answer Format:  " + 
+                " \" Answer \" \n " +
+                " \"For more info you can check our Sources: <a url=\"https://urlhere\">1</a> \" \n" + 
                 "Article: \"\"\"";
             foreach(var i in Rankings)
             {

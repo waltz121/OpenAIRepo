@@ -36,6 +36,7 @@ namespace OpenAI.UnitTests
             requestBody.Messages = messages;
             requestBody.MaxTokens = 500;
             requestBody.Model = "gpt-3.5-turbo";
+            
 
             string userMessage = "What does having low vitamin D Means?";
 
