@@ -2,7 +2,10 @@
 using OpenAiCore.OpenAiRepository;
 using OpenAiCore.OpenAiRepository.DTO;
 using OpenAiCore.OpenAiRepository.DTO.OpenAi;
+using OpenAiCore.OpenAiRepository.DTO.PineCone;
 using OpenAiCore.OpenAiRepository.Model;
+using OpenAiCore.PineConeRepository;
+using OpenAiCore.PineConeRepository.DTO;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -12,13 +15,16 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
+
 namespace OpenAiCore.OpenAiServices
 {
     public class OpenAiService
     {
         OpenAiAPIRepository OpenAiRepo;
+        PineConeRepository.PineConeRepository pineConeRepository;
         public OpenAiService() {
             OpenAiRepo = new OpenAiAPIRepository();
+            pineConeRepository = new PineConeRepository.PineConeRepository();
         }
 
         private async Task<List<float>> GetQueryEmbeddingsAsync(string query)
@@ -50,6 +56,22 @@ namespace OpenAiCore.OpenAiServices
             }).ToList();
 
             return dataRecords;
+        }
+
+        private async Task<PineConeQueryResponseDTO> QueryPineCone(List<float> Queryembeddings)
+        {
+            PineConeQueryRequestDTO requestDTO = new PineConeQueryRequestDTO()
+            {
+                TopK = 10,
+                Namespace = "ChatBotApp",
+                IncludeValues = "false",
+                IncludeMetadata = "true",
+                Vector = Queryembeddings
+            };
+            
+            PineConeQueryResponseDTO response = await pineConeRepository.Query(requestDTO);
+            return response;
+            
         }
 
         private List<EmbeddingRanking> GetRankings(List<EmbeddingCSVDataFrame> dataRecords, List<float> QueryEmbeddings)
@@ -91,5 +113,32 @@ namespace OpenAiCore.OpenAiServices
 
             return response;
         }
+
+        public async Task<ChatCompletionResponseDTO> GetChatCompletion_WithSearch_PineCone(ChatCompletionRequestDTO requestDTO, string userMessage)
+        {
+            var QueryEmbeddings = await GetQueryEmbeddingsAsync(userMessage);
+            var PineConeTopRecords = await QueryPineCone(QueryEmbeddings);
+
+            string QueryMessage = "Use the below article to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below" +
+               " Answer Format:  " +
+               " \" Answer \" \n " +
+               " \"For more info you can check our Sources: <a url=\"https://urlhere\">1</a> \" \n" +
+               "Article: \"\"\"";
+
+            foreach(var i in PineConeTopRecords.Matches)
+            {
+                var Metadata = i.Metadata;
+                QueryMessage = QueryMessage + Metadata.Text + ", sources: " + Metadata.Url;
+            }
+
+            QueryMessage = QueryMessage + "\"\"\"";
+            QueryMessage = QueryMessage + "Question : " + userMessage;
+
+            requestDTO.Messages.Add(new MessagesDTO() { Role = "user", Content = QueryMessage });
+            var response = await OpenAiRepo.ChatCompletion(requestDTO);
+            return response;
+        }
+
+
     }
 }

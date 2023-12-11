@@ -40,6 +40,29 @@ namespace OpenAI.UnitTests
                 var response = await OpenAiService.GetChatCompletion_withSearch(requestBody, userMessage);
             }).GetAwaiter().GetResult();
         }
+        
+        [TestMethod]
+        public void GetAiResponseWith_Context_UsingPineCone()
+        {
+            ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
+            List<MessagesDTO> messages = new List<MessagesDTO>
+            {
+                new MessagesDTO { Role ="system", Content = prompt },
+                new MessagesDTO() { Role = "assistant", Content = "Hello! How can I assist you today?" },
+                new MessagesDTO() { Role = "user", Content = "Can you tell me about Mercola?" },
+                new MessagesDTO() { Role = "assistant", Content = "Certainly! Mercola is a health and wellness company founded by Dr. Joseph Mercola. We are dedicated to providing high-quality products and information to help people lead healthier lives. Our products range from supplements to personal care items, all made with natural ingredients. We also offer a wealth of health-related articles and resources on our website. If you have any specific questions or need assistance with our products or services, feel free to ask!" }
+            };
+            requestBody.Messages = messages;
+            requestBody.MaxTokens = 500;
+            requestBody.Model = "gpt-3.5-turbo";
+
+            string userMessage = "What does having low vitamin D Means?";
+            Task.Run(async () =>
+            {
+                var response = await OpenAiService.GetChatCompletion_WithSearch_PineCone(requestBody, userMessage);
+            }).GetAwaiter().GetResult();
+
+        }
 
     }
 }

@@ -63,7 +63,7 @@ namespace ChatBot.Models.ViewModels
 
             if (LastMessage.Role == "user")
             {
-                response = await openAiService.GetChatCompletion_withSearch(requestBody, LastMessage.Content);
+                response = await openAiService.GetChatCompletion_WithSearch_PineCone(requestBody, LastMessage.Content);
             }
 
             return response;
