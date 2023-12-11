@@ -31,7 +31,7 @@ namespace OpenAiCore
                 OutputDataSet = outputDataSet;
             }
 
-            if(Pinecone_ApiKey == null)
+            if(pineconeApikey == null)
             {
                 throw new ArgumentNullException();
             }

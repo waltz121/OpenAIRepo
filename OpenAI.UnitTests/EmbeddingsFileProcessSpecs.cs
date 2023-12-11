@@ -3,12 +3,8 @@ using OpenAiCore.OpenAiRepository;
 using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.Model;
 using OpenAiCore.OpenAiRepository.Model.JsonModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Text.Json;
-using System.Threading.Tasks;
 
 namespace OpenAI.UnitTests
 {
@@ -42,7 +38,7 @@ namespace OpenAI.UnitTests
 
 
             List<string> stringsToEmbed = new List<string>();
-            foreach(var data in dataRecords)
+            foreach (var data in dataRecords)
             {
                 stringsToEmbed.Add(data.Text);
             }
@@ -60,8 +56,8 @@ namespace OpenAI.UnitTests
             csv.AppendLine("text|embedding");
             int responseCtr = 0;
             foreach (var row in dataRecords)
-            {                       
-                string embeddings = JsonSerializer.Serialize( response.Data[responseCtr].Embedding);
+            {
+                string embeddings = JsonSerializer.Serialize(response.Data[responseCtr].Embedding);
                 var formattedStr = row.Text.Replace("|", "");
                 csv.AppendLine(formattedStr + "|" + embeddings);
                 responseCtr++;
@@ -95,12 +91,12 @@ namespace OpenAI.UnitTests
             int CharLimit = 120;
             int CharCounter = 0;
             string tmpStr = "";
-            foreach(var post in jsonData.root.posts)
+            foreach (var post in jsonData.root.posts)
             {
-                foreach(var character in post.content)
+                foreach (var character in post.content)
                 {
                     tmpStr = tmpStr + character;
-                    if(CharCounter >= CharLimit)
+                    if (CharCounter >= CharLimit)
                     {
                         if (character == '.' || character == '?' || character == '!')
                         {
@@ -117,7 +113,7 @@ namespace OpenAI.UnitTests
 
             File.WriteAllText(OutputJsonDataSet, csv.ToString());
         }
-         
+
         [TestMethod]
         public void SetEmbeddings_SaveWithURL()
         {

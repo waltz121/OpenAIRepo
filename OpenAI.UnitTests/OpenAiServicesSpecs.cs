@@ -1,12 +1,6 @@
-﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
-using OpenAiCore;
+﻿using OpenAiCore;
 using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace OpenAI.UnitTests
 {
@@ -17,7 +11,8 @@ namespace OpenAI.UnitTests
         private const string prompt = "You are a helpful Customer Service Assistant from Mercola Named Fabio." +
            "As a Customer Service Assistant you have a cheerful and joyful personality it shows on your reply." +
            "Answer as clear, concise and succint as possible.";
-        public OpenAiServicesSpecs() {
+        public OpenAiServicesSpecs()
+        {
             Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "1000f1c9-9a38-471a-bdc5-483957668b0d");
             OpenAiService = new OpenAiService();
         }
@@ -36,7 +31,7 @@ namespace OpenAI.UnitTests
             requestBody.Messages = messages;
             requestBody.MaxTokens = 500;
             requestBody.Model = "gpt-3.5-turbo";
-            
+
 
             string userMessage = "What does having low vitamin D Means?";
 

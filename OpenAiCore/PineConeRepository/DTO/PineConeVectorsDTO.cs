@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace OpenAiCore.OpenAiRepository.DTO.PineCone
 {
-    public class PineConeUpsertRequestDTO
+    public class PineConeVectorsDTO
     {
         [JsonPropertyName("id")]
         public string ID { get; set; }
@@ -14,6 +14,6 @@ namespace OpenAiCore.OpenAiRepository.DTO.PineCone
         public List<float> Values { get; set; }
 
         [JsonPropertyName("metadata")]
-        public List<KeyValuePair<string, string>> Metadata { get; set; }
+        public PineConeMetaDataDTO Metadata { get; set; }
     }
 }
