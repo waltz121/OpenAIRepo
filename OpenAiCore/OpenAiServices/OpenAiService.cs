@@ -1,6 +1,7 @@
 ﻿using MathNet.Numerics;
 using OpenAiCore.OpenAiRepository;
 using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.Model;
 using System;
 using System.Collections.Generic;

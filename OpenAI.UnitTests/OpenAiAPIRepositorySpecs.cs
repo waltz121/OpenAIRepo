@@ -1,7 +1,7 @@
 ﻿using MathNet.Numerics;
 using OpenAiCore;
 using OpenAiCore.OpenAiRepository;
-using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.Model;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,7 @@ namespace OpenAI.UnitTests
     {
         OpenAiAPIRepository OpenAiRepo;
         public OpenAiAPIRepositorySpecs() {
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "");
             OpenAiRepo = new OpenAiAPIRepository();
         }
 
@@ -104,8 +104,9 @@ namespace OpenAI.UnitTests
                 var columns = line.Split("|");
                 return new EmbeddingCSVDataFrame
                 {
-                    text = columns[0],
-                    embedding = JsonSerializer.Deserialize<List<float>>(columns[1])
+                    url = columns[0],
+                    text = columns[1],
+                    embedding = JsonSerializer.Deserialize<List<float>>(columns[2])
                 };
             }).ToList();
             

@@ -3,16 +3,16 @@ using System.Collections.Generic;
 using System.Text;
 using System.Text.Json.Serialization;
 
-namespace OpenAiCore.OpenAiRepository.DTO
+namespace OpenAiCore.OpenAiRepository.DTO.OpenAi
 {
     public class EmbeddingDTO
     {
         [JsonPropertyName("object")]
-        public string Object {  get; set; }
+        public string Object { get; set; }
 
         [JsonPropertyName("embedding")]
-        public List<float> Embedding {  get; set; }
-        
+        public List<float> Embedding { get; set; }
+
         [JsonPropertyName("index")]
         public int Index { get; set; }
     }

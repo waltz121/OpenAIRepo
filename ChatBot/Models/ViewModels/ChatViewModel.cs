@@ -1,5 +1,5 @@
 ﻿using OpenAiCore.OpenAiRepository;
-using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiServices;
 
 namespace ChatBot.Models.ViewModels

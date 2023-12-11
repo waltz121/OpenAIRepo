@@ -1,7 +1,7 @@
 using ChatBot.Models;
 using ChatBot.Models.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using System.Diagnostics;
 
 namespace ChatBot.Controllers

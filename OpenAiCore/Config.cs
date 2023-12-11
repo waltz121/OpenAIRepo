@@ -9,7 +9,9 @@ namespace OpenAiCore
         public static string OpenAI_ApiKey { get; private set; }
         public static string OutputDataSet { get; private set; }
 
-        public static void Init(string apiKey,string outputDataSet)
+        public static string Pinecone_ApiKey { get; private set; }
+
+        public static void Init(string apiKey,string outputDataSet, string pineconeApikey)
         {
             if (apiKey == null)
             {
@@ -27,6 +29,15 @@ namespace OpenAiCore
             else
             {
                 OutputDataSet = outputDataSet;
+            }
+
+            if(Pinecone_ApiKey == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                Pinecone_ApiKey = pineconeApikey;
             }
         }
 

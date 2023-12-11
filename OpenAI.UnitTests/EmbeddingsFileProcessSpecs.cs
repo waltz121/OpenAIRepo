@@ -1,6 +1,6 @@
 ﻿using OpenAiCore;
 using OpenAiCore.OpenAiRepository;
-using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.Model;
 using OpenAiCore.OpenAiRepository.Model.JsonModels;
 using System;
@@ -22,7 +22,7 @@ namespace OpenAI.UnitTests
 
         public EmbeddingsFileProcessSpecs()
         {
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "");
             OpenAiRepo = new OpenAiAPIRepository();
         }
 
@@ -117,7 +117,7 @@ namespace OpenAI.UnitTests
 
             File.WriteAllText(OutputJsonDataSet, csv.ToString());
         }
-
+         
         [TestMethod]
         public void SetEmbeddings_SaveWithURL()
         {

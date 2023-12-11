@@ -1,4 +1,4 @@
-﻿using OpenAiCore.OpenAiRepository.DTO;
+﻿using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using System;
 using System.Collections.Generic;
 using System.Net.Http;

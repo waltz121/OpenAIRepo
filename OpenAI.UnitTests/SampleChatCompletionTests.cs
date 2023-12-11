@@ -15,9 +15,9 @@ namespace OpenAI.UnitTests
 
         public SampleChatCompletionTests() {
             OpenAIAuthServices = new AzureOpenAiAuthorizationServices();
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "");
         }
-
+        
         [TestMethod]
         public void Sample_SimpleChat() {
             var api = OpenAIAuthServices.FromOpenAiOrg();

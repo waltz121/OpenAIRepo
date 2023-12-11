@@ -1,6 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestPlatform.CommunicationUtilities;
 using OpenAiCore;
-using OpenAiCore.OpenAiRepository.DTO;
+using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiServices;
 using System;
 using System.Collections.Generic;
@@ -18,7 +18,7 @@ namespace OpenAI.UnitTests
            "As a Customer Service Assistant you have a cheerful and joyful personality it shows on your reply." +
            "Answer as clear, concise and succint as possible.";
         public OpenAiServicesSpecs() {
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "1000f1c9-9a38-471a-bdc5-483957668b0d");
             OpenAiService = new OpenAiService();
         }
 
