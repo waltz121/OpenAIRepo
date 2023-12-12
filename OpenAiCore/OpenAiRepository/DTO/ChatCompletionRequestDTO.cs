@@ -15,5 +15,7 @@ namespace OpenAiCore.OpenAiRepository.DTO.OpenAi
         public List<MessagesDTO> Messages { get; set; }
         [JsonPropertyName("stream")]
         public bool Stream { get; set; } = false;
+        [JsonPropertyName("temperature")]
+        public double Temperature { get; set; } = 0.5;
     }
 }

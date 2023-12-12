@@ -10,7 +10,8 @@ namespace ChatBot.Models.ViewModels
         OpenAiService openAiService;
         private const string prompt = "You are a helpful Customer Service Assistant from Mercola Named Fabio." + 
             "As a Customer Service Assistant you have a cheerful and joyful personality it shows on your reply." + 
-            "Answer as clear, concise and succint as possible.";
+            "Answer as clear, concise and succint as possible." +
+            "Format your answers as Html tags.";
 
         public ChatViewModel() {
             OpenAiRepo = new OpenAiAPIRepository();
@@ -29,7 +30,8 @@ namespace ChatBot.Models.ViewModels
 
             requestBody.Model = "gpt-3.5-turbo";
             requestBody.Messages = messagesDTO;
-            requestBody.MaxTokens = 300;
+            requestBody.MaxTokens = 200;
+            requestBody.Temperature = 0.2;
 
             var response = await OpenAiRepo.ChatCompletion(requestBody);
 
@@ -42,7 +44,7 @@ namespace ChatBot.Models.ViewModels
             ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
             Messages.Insert(0, new MessagesDTO() { Role = "system", Content = prompt });
             requestBody.Messages = Messages;
-            requestBody.MaxTokens = 500;
+            requestBody.MaxTokens = 1000;
             requestBody.Model = "gpt-3.5-turbo";
 
             var response = await OpenAiRepo.ChatCompletion(requestBody);
@@ -58,6 +60,7 @@ namespace ChatBot.Models.ViewModels
             requestBody.Messages = Messages;
             requestBody.MaxTokens = 500;
             requestBody.Model = "gpt-3.5-turbo";
+            requestBody.Temperature = 0.2;
 
             var LastMessage = Messages.Last();
 

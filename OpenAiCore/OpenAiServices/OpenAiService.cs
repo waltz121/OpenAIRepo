@@ -95,7 +95,7 @@ namespace OpenAiCore.OpenAiServices
             var CsvRecords = GetEmbeddedCSVData();
             var Rankings = GetRankings(CsvRecords, QueryEmbeddings);
 
-            string QueryMessage = "Use the below article to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below" +
+            string QueryMessage = "Use the below article to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below." +
                 " Answer Format:  " + 
                 " \" Answer \" \n " +
                 " \"For more info you can check our Sources: <a url=\"https://urlhere\">1</a> \" \n" + 
@@ -119,11 +119,11 @@ namespace OpenAiCore.OpenAiServices
             var QueryEmbeddings = await GetQueryEmbeddingsAsync(userMessage);
             var PineConeTopRecords = await QueryPineCone(QueryEmbeddings);
 
-            string QueryMessage = "Use the below article to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below" +
+            string QueryMessage = "Use the article below when answering the Question. Only base your answer to the Article below." +
                " Answer Format:  " +
-               " \" Answer \" \n " +
-               " \"For more info you can check our Sources: <a url=\"https://urlhere\">1</a> \" \n" +
-               "Article: \"\"\"";
+               " || Answer ||" +
+               " || For more info you can check our Sources: <a url=\"https://urlhere\">1</a> ||" +
+               "==Article: ";
 
             foreach(var i in PineConeTopRecords.Matches)
             {
@@ -131,8 +131,9 @@ namespace OpenAiCore.OpenAiServices
                 QueryMessage = QueryMessage + Metadata.Text + ", sources: " + Metadata.Url;
             }
 
-            QueryMessage = QueryMessage + "\"\"\"";
+            QueryMessage = QueryMessage + "==";
             QueryMessage = QueryMessage + "Question : " + userMessage;
+            
 
             requestDTO.Messages.Add(new MessagesDTO() { Role = "user", Content = QueryMessage });
             var response = await OpenAiRepo.ChatCompletion(requestDTO);
