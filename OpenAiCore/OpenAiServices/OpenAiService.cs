@@ -71,7 +71,6 @@ namespace OpenAiCore.OpenAiServices
             
             PineConeQueryResponseDTO response = await pineConeRepository.Query(requestDTO);
             return response;
-            
         }
 
         private List<EmbeddingRanking> GetRankings(List<EmbeddingCSVDataFrame> dataRecords, List<float> QueryEmbeddings)
@@ -128,11 +127,9 @@ namespace OpenAiCore.OpenAiServices
                 contentMessage = contentMessage + Metadata.Text + ", sources: " + Metadata.Url;
             }
             requestDTO.Messages.Add(new MessagesDTO() { Role = "system", Content = contentMessage });
-            //requestDTO.Messages.Add(new MessagesDTO() { Role = "user", Content = userMessage });
+            
             var response = await OpenAiRepo.ChatCompletion(requestDTO);
             return response;
         }
-
-
     }
 }

@@ -2,7 +2,7 @@
 {
     public class Prompt
     {
-        private string openAiChatbotPrompt;
+        private string openAiChatbotPrompt = "";
 
         public string GetOpenAiChatbotPrompt()
         {

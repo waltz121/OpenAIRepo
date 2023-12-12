@@ -20,7 +20,7 @@ namespace ChatBot.Models.ViewModels
             {
                 new MessagesDTO() { Role = "system", Content = prompt.GetOpenAiChatbotPrompt() },
                 new MessagesDTO() { Role = "user", Content = "Hello!" }
-             };
+            };
         }
         public List<MessagesDTO> Messages { get; set; }
         public string TxtMessage { get; set; }
