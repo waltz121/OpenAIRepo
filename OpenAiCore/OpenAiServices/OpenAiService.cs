@@ -95,11 +95,11 @@ namespace OpenAiCore.OpenAiServices
             var CsvRecords = GetEmbeddedCSVData();
             var Rankings = GetRankings(CsvRecords, QueryEmbeddings);
 
-            string QueryMessage = "Use the below article to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below." +
+            string QueryMessage = "Use the below Context to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below." +
                 " Answer Format:  " + 
                 " \" Answer \" \n " +
-                " \"For more info you can check our Sources: <a url=\"https://urlhere\">1</a> \" \n" + 
-                "Article: \"\"\"";
+                " \"For more info you can check our articles: <a url=\"https://urlhere\">1</a> \" \n" + 
+                "Context: \"\"\"";
             foreach(var i in Rankings)
             {
                 QueryMessage = QueryMessage + i.Text;
@@ -119,23 +119,16 @@ namespace OpenAiCore.OpenAiServices
             var QueryEmbeddings = await GetQueryEmbeddingsAsync(userMessage);
             var PineConeTopRecords = await QueryPineCone(QueryEmbeddings);
 
-            string QueryMessage = "Use the article below when answering the Question. Only base your answer to the Article below." +
-               " Answer Format:  " +
-               " || Answer ||" +
-               " || For more info you can check our Sources: <a url=\"https://urlhere\">1</a> ||" +
-               "==Article: ";
+            string contentMessage = "Use the Context below when answering the user." +
+               "Context: ";
 
             foreach(var i in PineConeTopRecords.Matches)
             {
                 var Metadata = i.Metadata;
-                QueryMessage = QueryMessage + Metadata.Text + ", sources: " + Metadata.Url;
+                contentMessage = contentMessage + Metadata.Text + ", sources: " + Metadata.Url;
             }
-
-            QueryMessage = QueryMessage + "==";
-            QueryMessage = QueryMessage + "Question : " + userMessage;
-            
-
-            requestDTO.Messages.Add(new MessagesDTO() { Role = "user", Content = QueryMessage });
+            requestDTO.Messages.Add(new MessagesDTO() { Role = "system", Content = contentMessage });
+            //requestDTO.Messages.Add(new MessagesDTO() { Role = "user", Content = userMessage });
             var response = await OpenAiRepo.ChatCompletion(requestDTO);
             return response;
         }
