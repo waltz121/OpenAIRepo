@@ -3,8 +3,9 @@
 using TextToCSV;
 using TextToCSV.Process;
 
-TextToCSVBasic textToCSVBasic = new TextToCSVBasic();
-textToCSVBasic.main();
+//TextToCSVBasic textToCSVBasic = new TextToCSVBasic();
+//HTMLtoJson hTMLtoJson = new HTMLtoJson();
+//hTMLtoJson.main();
 
-Console.WriteLine("Finished converting to CSV");
-Console.ReadLine();
+JsonToEmbeddedJson jsonToEmbeddedJson = new JsonToEmbeddedJson(); 
+await jsonToEmbeddedJson.main();
