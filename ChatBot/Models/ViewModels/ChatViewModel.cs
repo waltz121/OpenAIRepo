@@ -21,6 +21,7 @@ namespace ChatBot.Models.ViewModels
                 new MessagesDTO() { Role = "system", Content = prompt.GetOpenAiChatbotPrompt() },
                 new MessagesDTO() { Role = "user", Content = "Hello!" }
             };
+            InitialMessages.Reverse();
         }
         public List<MessagesDTO> Messages { get; set; }
         public string TxtMessage { get; set; }
@@ -30,7 +31,7 @@ namespace ChatBot.Models.ViewModels
             ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
             List<MessagesDTO> messagesDTO = InitialMessages;
 
-            requestBody.Model = "gpt-3.5-turbo";
+            requestBody.Model = "gpt-3.5-turbo-1106";
             requestBody.Messages = messagesDTO;
             requestBody.MaxTokens = 500;
             requestBody.Temperature = 0.2;
@@ -57,10 +58,16 @@ namespace ChatBot.Models.ViewModels
         {
             ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
             ChatCompletionResponseDTO response = new ChatCompletionResponseDTO();
-            requestBody.Messages = InitialMessages;
+
+            foreach (var message in InitialMessages)
+            {
+                Messages.Insert(0, message);
+            }
+
+            requestBody.Messages = Messages;
             requestBody.MaxTokens = 2000;
-            requestBody.Model = "gpt-3.5-turbo";
-            requestBody.Temperature = 0.2;
+            requestBody.Model = "gpt-3.5-turbo-1106";
+            requestBody.Temperature = 0.8;
 
             var LastMessage = Messages.Last();
             requestBody.Messages.Add(LastMessage);

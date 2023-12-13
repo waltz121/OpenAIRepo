@@ -118,7 +118,7 @@ namespace OpenAiCore.OpenAiServices
             var QueryEmbeddings = await GetQueryEmbeddingsAsync(userMessage);
             var PineConeTopRecords = await QueryPineCone(QueryEmbeddings);
 
-            string contentMessage = "Use the Context below when answering the user." +
+            string contentMessage = "Use the Context below when answering the user. If you can't find the answer in the context refer to the previous messages. " +
                "Context: ";
 
             foreach(var i in PineConeTopRecords.Matches)
@@ -130,6 +130,6 @@ namespace OpenAiCore.OpenAiServices
             
             var response = await OpenAiRepo.ChatCompletion(requestDTO);
             return response;
-        }
+        }        
     }
 }
