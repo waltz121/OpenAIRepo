@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace OpenAiCore.OpenAiRepository.Model.JsonModels
+namespace OpenAiCore.OpenAiRepository.Model
 {
     public class EmbeddedJsonData
     {
