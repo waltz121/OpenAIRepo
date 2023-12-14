@@ -65,9 +65,11 @@ namespace ChatBot.Models.ViewModels
             }
 
             requestBody.Messages = Messages;
-            requestBody.MaxTokens = 2000;
+            requestBody.MaxTokens = 500;
             requestBody.Model = "gpt-3.5-turbo-1106";
-            requestBody.Temperature = 0.1;
+            requestBody.TopP = 0.3;
+            requestBody.Temperature = 0.4;
+            requestBody.PresencePenalty = 0.6;
 
             var LastMessage = Messages.Last();
             requestBody.Messages.Add(LastMessage);
