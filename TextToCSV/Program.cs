@@ -6,7 +6,7 @@ using TextToCSV.Process;
 // =================  Text to Json =================
 Console.WriteLine("Converting Html Text to Json ... ");
 HTMLtoJson hTMLtoJson = new HTMLtoJson();
-hTMLtoJson.main();
+hTMLtoJson.main("");
 Console.WriteLine("Finished Converting HTML Text to Json ... ");
 
 // =================  Json to Embedded Json =================

@@ -44,9 +44,9 @@ namespace TextToCSV.Process
             return noHTML;
         }
 
-        public void main()
+        public void main(string _url)
         {
-            string Url = "https://takecontrol.substack.com/p/the-fish-on-my-plate-documentary";
+            string Url = _url;
             string htmlTxt = GetHtmltxt();
             AddToJsonFile(htmlTxt, Url);
 

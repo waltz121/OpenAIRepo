@@ -1,17 +1,12 @@
 ﻿using MathNet.Numerics;
 using OpenAiCore.OpenAiRepository;
-using OpenAiCore.OpenAiRepository.DTO;
 using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.DTO.PineCone;
 using OpenAiCore.OpenAiRepository.Model;
-using OpenAiCore.PineConeRepository;
 using OpenAiCore.PineConeRepository.DTO;
-using System;
 using System.Collections.Generic;
-using System.Data;
 using System.IO;
 using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 
@@ -22,7 +17,8 @@ namespace OpenAiCore.OpenAiServices
     {
         OpenAiAPIRepository OpenAiRepo;
         PineConeRepository.PineConeRepository pineConeRepository;
-        public OpenAiService() {
+        public OpenAiService()
+        {
             OpenAiRepo = new OpenAiAPIRepository();
             pineConeRepository = new PineConeRepository.PineConeRepository();
         }
@@ -44,7 +40,7 @@ namespace OpenAiCore.OpenAiServices
         private List<EmbeddingCSVDataFrame> GetEmbeddedCSVData()
         {
             var lines = File.ReadAllLines(Config.OutputDataSet);
-            var dataRecords = lines.Skip(1).Select(line  =>
+            var dataRecords = lines.Skip(1).Select(line =>
             {
                 var columns = line.Split('|');
                 return new EmbeddingCSVDataFrame
@@ -68,7 +64,7 @@ namespace OpenAiCore.OpenAiServices
                 IncludeMetadata = "true",
                 Vector = Queryembeddings
             };
-            
+
             PineConeQueryResponseDTO response = await pineConeRepository.Query(requestDTO);
             return response;
         }
@@ -95,11 +91,11 @@ namespace OpenAiCore.OpenAiServices
             var Rankings = GetRankings(CsvRecords, QueryEmbeddings);
 
             string QueryMessage = "Use the below Context to answer the question and write the url sources of the article at the end of your answer. Only based your answer on the article below provided. Use the Answer format below." +
-                " Answer Format:  " + 
+                " Answer Format:  " +
                 " \" Answer \" \n " +
-                " \"For more info you can check our articles: <a url=\"https://urlhere\">1</a> \" \n" + 
+                " \"For more info you can check our articles: <a url=\"https://urlhere\">1</a> \" \n" +
                 "Context: \"\"\"";
-            foreach(var i in Rankings)
+            foreach (var i in Rankings)
             {
                 QueryMessage = QueryMessage + i.Text;
             }
@@ -121,15 +117,15 @@ namespace OpenAiCore.OpenAiServices
             string contentMessage = "Use the Context below when answering the user. If you can't find the answer in the context refer to the previous messages. " +
                "Context: ";
 
-            foreach(var i in PineConeTopRecords.Matches)
+            foreach (var i in PineConeTopRecords.Matches)
             {
                 var Metadata = i.Metadata;
                 contentMessage = contentMessage + Metadata.Text + ", sources: " + Metadata.Url;
             }
             requestDTO.Messages.Add(new MessagesDTO() { Role = "system", Content = contentMessage });
-            
+
             var response = await OpenAiRepo.ChatCompletion(requestDTO);
             return response;
-        }        
+        }
     }
 }
