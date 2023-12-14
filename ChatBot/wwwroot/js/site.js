@@ -37,16 +37,16 @@ function insertMessage() {
     if ($.trim(msg) == "") {
         return false;
     }
-    
+
     $('<div class="message message-personal">' + msg + "</div>")
         .appendTo($(".mCSB_container"))
         .addClass("new");
-    
+
     $(".message-input").val(null);
     updateScrollbar();
-    
+
     chatbotMessage();
-    
+
 }
 
 $(".message-submit").click(function () {
@@ -72,7 +72,7 @@ async function chatbotMessage() {
     $(".message.loading").remove();
     $(
         '<div class="message new"><figure class="avatar"><img src="images/customer-service.svg" /></figure>' +
-        response.message +
+        SetMessageDisplay(response) +
         "</div>"
     )
         .appendTo($(".mCSB_container"))
@@ -92,7 +92,7 @@ async function InitialMessage() {
     $(".message.loading").remove();
     $(
         '<div class="message new"><figure class="avatar"><img src="images/customer-service.svg" /></figure>' +
-        message.messages[0].content +
+        SetMessageDisplay(message) +
         "</div>"
     )
         .appendTo($(".mCSB_container"))
@@ -131,6 +131,21 @@ async function GetInitialResponse() {
     return await $.ajax({
         type: "GET",
         url: "/Home/GetInitialChatViewModel",
-        contentType: "application/json",       
+        contentType: "application/json",
     })
+}
+
+function SetMessageDisplay(response) {
+    let responseObj = JSON.parse(response.message);
+    var stringHtml = "<p>" + responseObj.Message + "</p>";
+    var Sources = responseObj.SourceUrl;
+    if (Sources.length != 0) {
+        stringHtml = stringHtml + "Learn more: </br>";
+        for (var i = 0; i < Sources.length; i++) {
+            stringHtml += (i+1) + ". <a href='" + Sources[i].url + "' target='_blank'>" + Sources[i].url + "</a> ";
+        }
+    }
+
+    return stringHtml;
+
 }

@@ -24,7 +24,7 @@ namespace ChatBot.Controllers
         [HttpPost]
         public async Task<JsonResult> SendMessage([FromBody]ChatViewModel chatvm)
         {
-            var reply = await chatvm.GetBotReply_WithContext();
+            var reply = await chatvm.GetBotReply_WithContext_JsonMode();
             return Json(new { message = reply.Choices[0].Message.Content });
         }
 
@@ -35,7 +35,8 @@ namespace ChatBot.Controllers
             MessagesDTO tpm = await chatvm.SetInitialMessage();
             chatvm.Messages = new List<MessagesDTO>();
             chatvm.Messages.Add(tpm);
-            return Json(chatvm);
+            //return Json(chatvm);
+            return Json(new { message = tpm.Content });
         }
 
         public IActionResult Privacy()

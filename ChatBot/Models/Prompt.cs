@@ -4,9 +4,10 @@
     {
         private string openAiChatbotPrompt = "";
 
-        public string GetOpenAiChatbotPrompt()
+        public string GetOpenAiChatbotPrompt(string filename)
         {
-            string text = File.ReadAllText(@"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\ChatBot\wwwroot\File\OpenAiChatbotPrompt.txt");
+
+            string text = File.ReadAllText(@"wwwroot\File\" + filename);
             openAiChatbotPrompt = text;
             return openAiChatbotPrompt;
         }

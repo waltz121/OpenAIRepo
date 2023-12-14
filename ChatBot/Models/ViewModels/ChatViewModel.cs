@@ -15,10 +15,9 @@ namespace ChatBot.Models.ViewModels
             OpenAiRepo = new OpenAiAPIRepository();
             openAiService = new OpenAiService();
             prompt = new Prompt();
-            prompt.GetOpenAiChatbotPrompt();
             InitialMessages = new List<MessagesDTO>()
             {
-                new MessagesDTO() { Role = "system", Content = prompt.GetOpenAiChatbotPrompt() },
+                new MessagesDTO() { Role = "system", Content = prompt.GetOpenAiChatbotPrompt("OpenAiChatbotPromptJsonMode.txt") },
                 new MessagesDTO() { Role = "user", Content = "Hello!" }
             };
             InitialMessages.Reverse();
@@ -71,6 +70,33 @@ namespace ChatBot.Models.ViewModels
             requestBody.Temperature = 0.4;
             requestBody.PresencePenalty = 0.6;
             requestBody.Seed = 123;
+
+            var LastMessage = Messages.Last();
+            requestBody.Messages.Add(LastMessage);
+
+            if (LastMessage.Role == "user")
+            {
+                response = await openAiService.GetChatCompletion_WithSearch_PineCone(requestBody, LastMessage.Content);
+            }
+
+            return response;
+        }
+
+        public async Task<ChatCompletionResponseDTO> GetBotReply_WithContext_JsonMode()
+        {
+            ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
+            ChatCompletionResponseDTO response = new ChatCompletionResponseDTO();
+
+            foreach (var message in InitialMessages)
+            {
+                Messages.Insert(0, message);
+            }
+
+            requestBody.Messages = Messages;
+            requestBody.MaxTokens = 1000;
+            requestBody.Model = "gpt-3.5-turbo-1106";
+            requestBody.Seed = 123;
+            requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
 
             var LastMessage = Messages.Last();
             requestBody.Messages.Add(LastMessage);
