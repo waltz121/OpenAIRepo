@@ -17,17 +17,20 @@ namespace OpenAiCore.OpenAiRepository.DTO.OpenAi
         public bool Stream { get; set; } = false;
         [JsonPropertyName("temperature")]
         public double Temperature { get; set; } = 1;
-        
+
         [JsonPropertyName("top_p")]
         public double TopP { get; set; } = 1;
 
         [JsonPropertyName("seed")]
-        public int Seed { get; set; } = 123;
-        
+        public int? Seed { get; set; } = null;
+
         [JsonPropertyName("frequency_penalty")]
         public double FrequencyPenalty { get; set; } = 0;
-        
+
         [JsonPropertyName("presence_penalty")]
         public double PresencePenalty { get; set; } = 0;
+
+        [JsonPropertyName("response_format")]
+        public ResponseTypeDTO ResponseFormat { get; set; } = null;
     }
 }

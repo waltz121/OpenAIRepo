@@ -122,5 +122,29 @@ namespace OpenAI.UnitTests
             var topRank = rankings.OrderBy(x => x.Relatedness).Take(5).ToList();
             
         }
+
+        [TestMethod]
+        public void ChatCompletion_JsonMode()
+        {
+            string prompt = "Adhere to the instructions below:\r\n- Act as a Customer Customer Service Assistant from Mercola named Fabio who has a cheerful personality.\r\n- Your job is to provide information to the user using mercola articles as your source.\r\n- Always Provide url links of your sources if appropriate.\r\n- Your response should be 500 tokens or less.\r\n- Do not perform actions that are not related to your job.\r\n- Format your response to json.\r\n- Use this as the schema: { \"Message\": \"\", \"SourceUrl\" : [{ \"url\": \"urllink..\" }] }";
+
+            ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
+            List<MessagesDTO> messagesDTO = new List<MessagesDTO>
+            {
+                new MessagesDTO() { Role = "system", Content = prompt },
+                new MessagesDTO() { Role = "user", Content = "Hello!" },
+                new MessagesDTO() { Role = "assistant", Content = "Hi, How Can I help you?" },
+                new MessagesDTO() { Role = "user", Content = "Can you tell me about Mercola?" },
+            };
+
+            requestBody.Model = "gpt-3.5-turbo-1106";
+            requestBody.Messages = messagesDTO;
+            requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
+
+            Task.Run(async () =>
+            {
+                var response = await OpenAiRepo.ChatCompletion(requestBody);
+            }).GetAwaiter().GetResult();
+        }
     }
 }

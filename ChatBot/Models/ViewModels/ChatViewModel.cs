@@ -70,6 +70,7 @@ namespace ChatBot.Models.ViewModels
             requestBody.TopP = 0.3;
             requestBody.Temperature = 0.4;
             requestBody.PresencePenalty = 0.6;
+            requestBody.Seed = 123;
 
             var LastMessage = Messages.Last();
             requestBody.Messages.Add(LastMessage);
