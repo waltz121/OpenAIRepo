@@ -33,7 +33,7 @@ namespace ChatBot.Models.ViewModels
             requestBody.Model = "gpt-3.5-turbo-1106";
             requestBody.Messages = messagesDTO;
             requestBody.MaxTokens = 500;
-            requestBody.Temperature = 0.2;
+            requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
 
             var response = await OpenAiRepo.ChatCompletion(requestBody);
 
@@ -95,7 +95,8 @@ namespace ChatBot.Models.ViewModels
             requestBody.Messages = Messages;
             requestBody.MaxTokens = 1000;
             requestBody.Model = "gpt-3.5-turbo-1106";
-            requestBody.Seed = 123;
+            requestBody.PresencePenalty = 0.2;
+            //requestBody.Seed = 123;
             requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
 
             var LastMessage = Messages.Last();

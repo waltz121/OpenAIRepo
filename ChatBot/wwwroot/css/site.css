@@ -332,6 +332,23 @@ Custom Srollbar
     background-color: rgba(0, 0, 0, 0.5) !important;
 }
 
+
+label#learn-more {
+    font-weight: bold;
+}
+
+p.ai-message {
+    font-size: small;
+    font-family: monospace;
+    font-stretch: expanded;
+}
+
+a.article-links {
+    font-size: x-small;
+    font-style: italic;
+    font-stretch: extra-expanded;
+}
+
 /*--------------------
 Bounce
 --------------------*/

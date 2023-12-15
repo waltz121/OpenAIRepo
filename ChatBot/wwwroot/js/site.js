@@ -137,13 +137,22 @@ async function GetInitialResponse() {
 
 function SetMessageDisplay(response) {
     let responseObj = JSON.parse(response.message);
-    var stringHtml = "<p>" + responseObj.Message + "</p>";
-    var Sources = responseObj.SourceUrl;
+    var stringHtml = "<p class=\"ai-message\">" + responseObj.Message + "</p>";
+    var Sources = [];
+
+    //Code for checking undefined value
+    if (responseObj.SourceUrl != undefined) {
+        Sources = responseObj.SourceUrl;
+    }
+
     if (Sources.length != 0) {
-        stringHtml = stringHtml + "Learn more: </br>";
+        stringHtml = stringHtml + "<div><label id=\"learn-more\">Learn more: </label></br>";
         for (var i = 0; i < Sources.length; i++) {
-            stringHtml += (i+1) + ". <a href='" + Sources[i].url + "' target='_blank'>" + Sources[i].url + "</a> ";
+            var url = new URL(Sources[i].url);
+            var path = url.pathname;
+            stringHtml += (i + 1) + ". <a class=\"article-links\" href='" + url + "' target='_blank'>" + path + "</a> ";
         }
+        stringHtml = stringHtml + "</div>";
     }
 
     return stringHtml;
