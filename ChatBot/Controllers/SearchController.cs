@@ -8,16 +8,16 @@ namespace ChatBot.Controllers
         public IActionResult Index()
         {
             SearchViewModel vm = new SearchViewModel();
-            // vm.InsertTestData();
             return View(vm);
         }
 
         [HttpPost]
-        public ActionResult Index(SearchViewModel vm)
+        public async Task<ActionResult> Index(SearchViewModel vm)
         {
             if (ModelState.IsValid)
             {
-                // Handle the Search Logic Here
+                await vm.GetSearchResults();
+                
             }
 
             return View(vm);

@@ -2,10 +2,11 @@
 @model SearchViewModel
 
 <div class="Search">
-    <h1>Search</h1>
+    <h1>Mercola Vector Search</h1>
     <form asp-controller="Search" asp-action="Index" method="post">
         <input type="text" id="search" name="SearchText" placeholder="Search" value="@Model.SearchText" />
         <button type="submit" id="searchButton">Search</button>
+        <span asp-validation-for="SearchText" class="validation-error"></span>
     </form>
     <div id="results">
         <ul id="resultsList">

@@ -399,6 +399,11 @@ div.Result_Title a {
     font-size: large;
 }
 
+span.validation-error {
+    color: red;
+    font-size: small;
+}
+
 /*--------------------
 Bounce
 --------------------*/

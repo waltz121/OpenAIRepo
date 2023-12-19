@@ -1,20 +1,34 @@
 ﻿using HtmlAgilityPack;
+using OpenAiCore.OpenAiServices;
+using System.ComponentModel.DataAnnotations;
 
 namespace ChatBot.Models.ViewModels
 {
     public class SearchViewModel
     {
+        OpenAiService openAiService;
         public SearchViewModel()
         {
             searchResults = new List<SearchResults>();
+            openAiService = new OpenAiService();
         }
 
         private string searchText;
-        private List<SearchResults> searchResults1;
+        private List<SearchResults> _searchResults;
 
+        [Required(ErrorMessage = "Please enter a search text")]
         public string SearchText { get => searchText; set => searchText = value; }
-        public List<SearchResults> searchResults { get => searchResults1; set => searchResults1 = value; }
+        public List<SearchResults> searchResults { get => _searchResults; set => _searchResults = value; }
 
+        public async Task GetSearchResults()
+        {
+           var pineconeResult = await openAiService.GetTop_Ranking_Pinecone(20, searchText);
+            foreach (var result in pineconeResult.Matches)
+            {
+                var Title = await GetTitleFromUrl(result.Metadata.Url);
+                searchResults.Add(new SearchResults(Title, result.Metadata.Text, result.Metadata.Url));
+            }
+        }
         public async Task<string> GetTitleFromUrl(string url)
         {
             using (HttpClient client = new HttpClient())

@@ -4,6 +4,7 @@ using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.DTO.PineCone;
 using OpenAiCore.OpenAiRepository.Model;
 using OpenAiCore.PineConeRepository.DTO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -56,13 +57,23 @@ namespace OpenAiCore.OpenAiServices
 
         private async Task<PineConeQueryResponseDTO> QueryPineCone(List<float> Queryembeddings)
         {
+            return await QueryPineCone(10, Queryembeddings, false, true, "ChatBotApp");
+        }
+
+        private async Task<PineConeQueryResponseDTO> QueryPineCone(int topk, List<float> queryEmbeddings)
+        {
+            return await QueryPineCone(topk, queryEmbeddings, false,true, "ChatBotApp");
+        }
+
+        private async Task<PineConeQueryResponseDTO> QueryPineCone(int topk, List<float> queryEmbeddings, bool includeValues, bool includeMetaData, string _namespace)
+        {
             PineConeQueryRequestDTO requestDTO = new PineConeQueryRequestDTO()
             {
-                TopK = 10,
-                Namespace = "ChatBotApp",
-                IncludeValues = "false",
-                IncludeMetadata = "true",
-                Vector = Queryembeddings
+                TopK = topk,
+                Namespace = _namespace,
+                IncludeValues = includeValues.ToString(),
+                IncludeMetadata = includeMetaData.ToString(),
+                Vector = queryEmbeddings
             };
 
             PineConeQueryResponseDTO response = await pineConeRepository.Query(requestDTO);
@@ -127,5 +138,15 @@ namespace OpenAiCore.OpenAiServices
             var response = await OpenAiRepo.ChatCompletion(requestDTO);
             return response;
         }
+
+        public async Task<PineConeQueryResponseDTO> GetTop_Ranking_Pinecone(int topK, string searchQuery)
+        {
+            var queryEmbeddings = await GetQueryEmbeddingsAsync(searchQuery);
+            var pineConeTopRecords = await QueryPineCone(topK, queryEmbeddings);
+
+            return pineConeTopRecords;
+        }
+
+
     }
 }
