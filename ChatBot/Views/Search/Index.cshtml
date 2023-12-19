@@ -1,14 +1,28 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
-}
+﻿@using ChatBot.Models.ViewModels
+@model SearchViewModel
 
 <div class="Search">
-   @* Create a  Search input bar and a button on html *@
     <h1>Search</h1>
-    <input type="text" id="search" placeholder="Search" />
-    <button id="searchButton">Search</button>
-    <div id="results"></div>
+    <form asp-controller="Search" asp-action="Index" method="post">
+        <input type="text" id="search" name="SearchText" placeholder="Search" value="@Model.SearchText" />
+        <button type="submit" id="searchButton">Search</button>
+    </form>
+    <div id="results">
+        <ul id="resultsList">
+            @foreach (var item in Model.searchResults)
+            {
+                <li class="resultItem">
+                    <div class="Result_Url">
+                        <a href="@item.Url">@item.Url</a>
+                    </div>
+                    <div class="Result_Title">
+                        <a href="@item.Url">@item.Title</a>
+                    </div>
+                    <div class="Result_Description">
+                        <p>@item.Description</p>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
 </div>
-

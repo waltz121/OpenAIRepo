@@ -357,6 +357,8 @@ div.Search {
     border-radius: 5px;
     border: 1px solid #ccc;
     padding: 5px;
+    max-height: 680px;
+    overflow-y: auto;
 }
 
 input#search {
@@ -372,6 +374,29 @@ border: 1px solid #ccc;
     border-radius: 5px;
     padding: 5px;
     width: 10%;
+    background-color: limegreen
+}
+
+li.resultItem {
+list-style-type: none;
+    padding: 5px;
+    border-bottom: 1px solid #ccc;
+}
+
+li.resultItem:hover {
+    background-color: #ccc;
+}
+
+div.Result_Url a {
+    font-size: x-small;
+    font-stretch: extra-expanded;
+    color: #248a52
+}
+
+div.Result_Title a {
+    -webkit-text-decoration: inherit;
+    text-decoration: inherit;
+    font-size: large;
 }
 
 /*--------------------
