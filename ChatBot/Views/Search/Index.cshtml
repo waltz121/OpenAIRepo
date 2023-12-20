@@ -1,4 +1,8 @@
-﻿@using ChatBot.Models.ViewModels
+﻿@{
+    ViewData["Title"] = "Search";
+}
+
+@using ChatBot.Models.ViewModels
 @model SearchViewModel
 
 <div class="Search">
@@ -27,3 +31,14 @@
         </ul>
     </div>
 </div>
+
+@* Code for enabling to use enter key for post submit *@
+<script>
+    $(document).ready(function () {
+        $("#search").keyup(function (event) {
+            if (event.keyCode === 13) {
+                $("#searchButton").click();
+            }
+        });
+    });
+</script>
