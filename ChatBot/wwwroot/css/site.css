@@ -352,6 +352,11 @@ a.article-links {
     font-stretch: extra-expanded;
 }
 
+/*--------------------
+Search Edits
+--------------------*/
+
+
 div.Search {
     background-color: #fff;
     border-radius: 5px;
@@ -402,6 +407,35 @@ div.Result_Title a {
 span.validation-error {
     color: red;
     font-size: small;
+}
+
+/*--------------------
+Upload Edits
+--------------------*/
+
+div.Upload {
+    background-color: #fff;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    padding: 5px;
+    max-height: 680px;
+    overflow-y: auto;
+}
+
+input#upload {
+border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 89%;
+    height: 30px;
+}
+
+button#uploadButton {
+border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 5px;
+    width: 10%;
+    background-color: lightblue;
 }
 
 /*--------------------

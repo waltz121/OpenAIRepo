@@ -1,0 +1,16 @@
+﻿@using ChatBot.Models.ViewModels
+@{
+    ViewData["Title"] = "Upload";
+}
+@model UploadViewModel
+
+<div class="Upload">
+    <h1>Upload to Vector Database for RAG</h1>
+    <form asp-controller="Upload" asp-action="Index" method="post">
+        <input type="text" id="upload" name="url" placeholder="Place your url here" value="@Model.Url" />
+        <button type="submit" id="uploadButton">Upload</button>
+    </form>
+    <div id="upload-results">
+        <p>@Model.ResultMessage</p>
+    </div>
+</div>
