@@ -96,6 +96,7 @@ namespace OpenAI.UnitTests
                 var response = await PineConeRepository.Upsert(requestDTO);
             }).GetAwaiter().GetResult();
         }
+
         [TestMethod]
         public void Query_FromPineCone()
         {
@@ -125,6 +126,47 @@ namespace OpenAI.UnitTests
                 IncludeValues = "false",
                 IncludeMetadata = "true",
                 Vector = QueryEmbedding
+            };
+
+            Task.Run(async () =>
+            {
+                var response = await PineConeRepository.Query(requestDTO);
+            }).GetAwaiter().GetResult();
+
+        }
+
+        [TestMethod]
+        public void Query_FromPineCone_WithMetaData()
+        {
+            // Get Embeddings of Input
+            EmbeddingRequestDTO embeddingRequestDTO = new EmbeddingRequestDTO()
+            {
+                Input = new List<string>()
+                {
+                    "https://products.mercolamarket.com/vitamin-c/"
+                },
+                Model = "text-embedding-ada-002"
+            };
+            EmbeddingResponseDTO embeddingResponseDTO = new EmbeddingResponseDTO();
+            Task.Run(async() =>
+            {
+                embeddingResponseDTO = await OpenAiAPIRepository.CreateEmbeddings(embeddingRequestDTO);
+            }).GetAwaiter().GetResult();
+
+            var QueryEmbedding = embeddingResponseDTO.Data[0].Embedding;
+
+            // Query PineCone using QueryEmbeddings
+            PineConeQueryRequestDTO requestDTO = new PineConeQueryRequestDTO()
+            {
+                TopK = 10,
+                Namespace = "ChatBotApp",
+                IncludeValues = "false",
+                IncludeMetadata = "true",
+                Vector = QueryEmbedding,
+                Filter = new PineConeQueryFilterDTO()
+                {
+                    Url = "https://products.mercolamarket.com/vitamin-c/"
+                }
             };
 
             Task.Run(async () =>

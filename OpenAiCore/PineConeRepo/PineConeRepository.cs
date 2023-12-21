@@ -57,6 +57,6 @@ namespace OpenAiCore.PineConeRepository
                 var responseDTO = JsonSerializer.Deserialize<PineConeQueryResponseDTO>(responseContent);
                 return responseDTO;
             }
-        }
+        }        
     }
 }

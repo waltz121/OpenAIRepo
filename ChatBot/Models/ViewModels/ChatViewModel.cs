@@ -96,7 +96,6 @@ namespace ChatBot.Models.ViewModels
             requestBody.MaxTokens = 1000;
             requestBody.Model = "gpt-3.5-turbo-1106";
             requestBody.PresencePenalty = 0.2;
-            //requestBody.Seed = 123;
             requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
 
             var LastMessage = Messages.Last();
@@ -109,6 +108,5 @@ namespace ChatBot.Models.ViewModels
 
             return response;
         }
-        
     }
 }

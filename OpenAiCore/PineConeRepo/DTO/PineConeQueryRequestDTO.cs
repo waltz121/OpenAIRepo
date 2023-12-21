@@ -21,5 +21,8 @@ namespace OpenAiCore.OpenAiRepository.DTO.PineCone
        
         [JsonPropertyName("vector")]
         public List<float> Vector { get; set; }
+
+        [JsonPropertyName("filter")]
+        public PineConeQueryFilterDTO Filter { get; set; } = null;
     }
 }
