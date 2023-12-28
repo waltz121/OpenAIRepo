@@ -3,6 +3,7 @@ using OpenAiCore.OpenAiRepository;
 using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.DTO.PineCone;
 using OpenAiCore.OpenAiRepository.Model;
+using OpenAiCore.Shared;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -13,86 +14,13 @@ using System.Threading.Tasks;
 
 namespace OpenAiCore.UploadPineConeServices
 {
-    public class UploadServices
+    public class UploadServices : StringCodeUtility
     {
         private OpenAiAPIRepository openAiAPI;
         private PineConeRepository.PineConeRepository pineConeAPI;
         public UploadServices() { 
             openAiAPI = new OpenAiAPIRepository();
             pineConeAPI = new PineConeRepository.PineConeRepository();
-        }
-        private string GetHtmlInput(string url)
-        {
-            string htmlInput = string.Empty;
-            try
-            {
-                HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-
-                if (response.StatusCode == HttpStatusCode.OK)
-                {
-                    Stream receiveStream = response.GetResponseStream();
-                    StreamReader readStream = null;
-
-                    if (response.CharacterSet == null)
-                    {
-                        readStream = new StreamReader(receiveStream);
-                    }
-                    else
-                    {
-                        readStream = new StreamReader(receiveStream, Encoding.GetEncoding(response.CharacterSet));
-                    }
-
-                    htmlInput = readStream.ReadToEnd();
-
-                    response.Close();
-                    readStream.Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                htmlInput = "Error: " + ex.Message;
-            }
-
-            return htmlInput;
-        }
-        private string RemoveScriptsStylesAndHtml(string htmlInput)
-        {
-            // Remove javascripts from htmlInput
-            htmlInput = Regex.Replace(htmlInput, "<script.*?</script>", String.Empty, RegexOptions.Singleline);
-
-            // Remove CSS from htmlInput
-            htmlInput = Regex.Replace(htmlInput, "<style.*?</style>", String.Empty, RegexOptions.Singleline);
-
-            // Remove html tags from htmlInput
-            htmlInput = Regex.Replace(htmlInput, "<.*?>", String.Empty, RegexOptions.Singleline);
-
-            // Remove whitespaces from htmlInput
-            htmlInput = Regex.Replace(htmlInput, @"\s+", " ");
-
-            return htmlInput;
-        }
-        private List<string> SplitTextToLimit(int CharLimit, string Text)
-        {
-            int CharCounter = 0;
-            string tempText = "";
-            List<string> TextList = new List<string>();
-            foreach (var character in Text)
-            {
-                tempText = tempText + character;
-                if (CharCounter >= CharLimit)
-                {
-                    if (character == '.' || character == '?' || character == '!')
-                    {
-                        // Add to list
-                        TextList.Add(tempText);
-                        tempText = "";
-                        CharCounter = 0;
-                    }
-                }
-                CharCounter++;
-            }
-            return TextList;
         }
 
         private async void SaveToPineCone(List<EmbeddingJsonDataFrame> EmbeddedData)

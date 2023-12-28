@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAiCore", "OpenAiCore\Op
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OpenAI.UnitTests", "OpenAI.UnitTests\OpenAI.UnitTests.csproj", "{7F024A43-B2A4-44C6-A3BF-399E7BC5E823}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TextToCSV", "TextToCSV\TextToCSV.csproj", "{A3C45AB0-AF4B-4723-B080-5DCF6C074E71}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataPipeline", "TextToCSV\DataPipeline.csproj", "{A3C45AB0-AF4B-4723-B080-5DCF6C074E71}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

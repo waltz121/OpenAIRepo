@@ -19,7 +19,7 @@ namespace TextToCSV.Process
         internal JsonToEmbeddedJson()
         {
             openAiAPIRepository = new OpenAiAPIRepository();
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "1000f1c9-9a38-471a-bdc5-483957668b0d");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "1000f1c9-9a38-471a-bdc5-483957668b0d", "connstring");
         }
         private async Task<List<EmbeddingDTO>> GetEmbeddings(List<string> TextList)
         {

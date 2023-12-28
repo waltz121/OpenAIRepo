@@ -6,9 +6,12 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 
+// Add configuration from appsettings.json
+builder.Configuration.AddJsonFile("appsettings.json");
+
 var app = builder.Build();
 
-Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "1000f1c9-9a38-471a-bdc5-483957668b0d");
+Config.Init(builder.Configuration["OpenAiApiKey"], @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", builder.Configuration["PineConeApiKey"], builder.Configuration["SQLConnectionString"]);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

@@ -8,10 +8,10 @@ namespace OpenAiCore
     {
         public static string OpenAI_ApiKey { get; private set; }
         public static string OutputDataSet { get; private set; }
-
         public static string Pinecone_ApiKey { get; private set; }
+        public static string SQLConnectionString { get; private set; }
 
-        public static void Init(string apiKey,string outputDataSet, string pineconeApikey)
+        public static void Init(string apiKey,string outputDataSet, string pineconeApikey, string sqlConnString)
         {
             if (apiKey == null)
             {
@@ -39,6 +39,15 @@ namespace OpenAiCore
             {
                 Pinecone_ApiKey = pineconeApikey;
             }
+
+            if(sqlConnString == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                SQLConnectionString = sqlConnString;
+            }
         }
 
         public static string IsInitialized()
@@ -52,6 +61,7 @@ namespace OpenAiCore
             {
                 return "OutputDataSet is null or empty";
             }
+            
 
             return string.Empty;
         }

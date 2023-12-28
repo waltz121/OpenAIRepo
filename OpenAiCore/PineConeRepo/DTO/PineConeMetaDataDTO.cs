@@ -8,6 +8,8 @@ namespace OpenAiCore.OpenAiRepository.DTO.PineCone
         public string Url { get; set; }
         [JsonPropertyName("text")]
         public string Text { get; set; }
-
+        
+        [JsonPropertyName("splitType")]
+        public string SplitType { get; set; }
     }
 }
