@@ -17,7 +17,7 @@ namespace ChatBot.Controllers
             if (ModelState.IsValid)
             {
                 // Do something
-                vm.SaveUrl();
+                await vm.SaveUrl();
             }
 
             return View(vm);
