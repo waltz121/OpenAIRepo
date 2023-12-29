@@ -10,9 +10,10 @@ namespace OpenAiCore
         public static string OutputDataSet { get; private set; }
         public static string Pinecone_ApiKey { get; private set; }
         public static string Pinecone_BaseUrl { get; private set; }
+        public static string Pinecone_Namespace { get; private set; }
         public static string SQLConnectionString { get; private set; }
 
-        public static void Init(string apiKey,string outputDataSet, string pineconeApikey, string sqlConnString, string pineconeBaseUrl)
+        public static void Init(string apiKey,string outputDataSet, string pineconeApikey, string sqlConnString, string pineconeBaseUrl, string pineconeNamespace)
         {
             if (apiKey == null)
             {
@@ -58,6 +59,15 @@ namespace OpenAiCore
             {
                 Pinecone_BaseUrl = pineconeBaseUrl;
             }
+
+            if(pineconeNamespace == null)
+            {
+                throw new ArgumentNullException();
+            }
+            else
+            {
+                Pinecone_Namespace = pineconeNamespace;
+            }
         }
 
         public static string IsInitialized()
@@ -87,6 +97,10 @@ namespace OpenAiCore
                 return "Pinecone Base Url is null or empty";
             }
             
+            if (string.IsNullOrEmpty(Pinecone_Namespace))
+            {
+                return "Pinecone Namespace is null or empty";
+            }
 
             return string.Empty;
         }

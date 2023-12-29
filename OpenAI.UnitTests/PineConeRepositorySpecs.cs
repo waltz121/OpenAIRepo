@@ -20,7 +20,8 @@ namespace OpenAI.UnitTests
                 "",
                 "08d21b42-5fa8-436e-8160-c89c8575b4dd",
                 "Data Source=PRODDBSOCIAL.NEWMERCOLA.COM;Initial Catalog=CommunityServer;User ID=webuser_communityserver;Password=w3bu$3r_c0mmun1ty$3rv3r!;Encrypt=False",
-                "https://mercoladataset-cbac0kl.svc.gcp-starter.pinecone.io");
+                "https://mercoladataset-cbac0kl.svc.gcp-starter.pinecone.io",
+                "MercolaDataset");
             PineConeRepository = new PineConeRepository();
             OpenAiAPIRepository = new OpenAiAPIRepository();
         }

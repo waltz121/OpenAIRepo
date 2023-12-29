@@ -11,7 +11,12 @@ builder.Configuration.AddJsonFile("appsettings.json");
 
 var app = builder.Build();
 
-Config.Init(builder.Configuration["OpenAiApiKey"], @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", builder.Configuration["PineConeApiKey"], builder.Configuration["SQLConnectionString"], builder.Configuration["PineConeBaseUrl"]);
+Config.Init(builder.Configuration["OpenAiApiKey"], 
+    @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", 
+    builder.Configuration["PineConeApiKey"], 
+    builder.Configuration["SQLConnectionString"], 
+    builder.Configuration["PineConeBaseUrl"], 
+    builder.Configuration["PineConeNamespace"]);
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())

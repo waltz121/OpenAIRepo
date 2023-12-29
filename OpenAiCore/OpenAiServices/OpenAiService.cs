@@ -56,12 +56,12 @@ namespace OpenAiCore.OpenAiServices
 
         private async Task<PineConeQueryResponseDTO> QueryPineCone(List<float> Queryembeddings)
         {
-            return await QueryPineCone(10, Queryembeddings, false, true, "ChatBotApp");
+            return await QueryPineCone(10, Queryembeddings, false, true, Config.Pinecone_Namespace);
         }
 
         private async Task<PineConeQueryResponseDTO> QueryPineCone(int topk, List<float> queryEmbeddings)
         {
-            return await QueryPineCone(topk, queryEmbeddings, false, true, "ChatBotApp");
+            return await QueryPineCone(topk, queryEmbeddings, false, true, Config.Pinecone_Namespace);
         }
 
         private async Task<PineConeQueryResponseDTO> QueryPineCone(int topk, List<float> queryEmbeddings, bool includeValues, bool includeMetaData, string _namespace)

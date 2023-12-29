@@ -1,0 +1,16 @@
+Select CP.PostID,
+	   dbo.mercola_GetFullPostsURL_FromPostID(CP.PostID) AS PostUrl,
+	   CP.FormattedBody,ISNULL(AD.SubstackUrl,'') as SubstackUrl
+	   FROM CS_Posts as CP with (nolock)
+	   inner join Mercola_NewsletterDetails as AD with (nolock ) on CP.PostID = AD.PostID
+	   Inner Join Mercola_MapNewsletterPosts as MM with (nolock) on MM.PostID = AD.PostId
+	   inner join Mercola_PostStatus PS with (nolock) on PS.Postid=CP.PostId
+	   WHERE
+	   AD.NewsletterDate BETWEEN'2023-03-01' AND '2023-04-01'
+	   AND CP.isapproved =1
+	   AND PS.StatusID = 7
+	   AND CP.SectionID=95
+	   AND AD.IncludeInArticles=1
+	   AND (MM.Newslettersortorder = 1 OR MM.Newslettersortorder = 2 OR MM.Newslettersortorder = 3)
+	   AND PS.IsRedirect = 0
+	   ORDER BY AD.NewsletterDate DESC,MM.NewsletterSortOrder

@@ -1,6 +1,7 @@
 ﻿using OpenAiCore.OpenAiRepository.DTO.PineCone;
 using OpenAiCore.PineConeRepository.DTO;
 using System;
+using System.Net;
 using System.Net.Http;
 using System.Text;
 using System.Text.Json;
@@ -18,24 +19,27 @@ namespace OpenAiCore.PineConeRepository
 
         public async Task<PineConeUpsertResponseDTO> Upsert(PineConeUpsertRequestDTO requestDTO)
         {
-
-            httpClient.DefaultRequestHeaders.Add("Api-Key", Config.Pinecone_ApiKey);           
-            var url = Config.Pinecone_BaseUrl + "/vectors/upsert";
-            var jsonBody = JsonSerializer.Serialize(requestDTO);
-            var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
-            var httpResponseMessage = await httpClient.PostAsync(url, content);
-            var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
-
-            if (!httpResponseMessage.IsSuccessStatusCode)
+            using(var httpClient = new HttpClient())
             {
-                throw new Exception("Error calling PineCone Upsert");
-            }
-            else
-            {
+                ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+                httpClient.DefaultRequestHeaders.Add("Api-Key", Config.Pinecone_ApiKey);
+                var url = Config.Pinecone_BaseUrl + "/vectors/upsert";
+                var jsonBody = JsonSerializer.Serialize(requestDTO);
+                var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
+                var httpResponseMessage = await httpClient.PostAsync(url, content);
+                var responseContent = await httpResponseMessage.Content.ReadAsStringAsync();
 
-                var responseDTO = JsonSerializer.Deserialize<PineConeUpsertResponseDTO>(responseContent);
-                return responseDTO;
-            }
+                if (!httpResponseMessage.IsSuccessStatusCode)
+                {
+                    throw new Exception("Error calling PineCone Upsert");
+                }
+                else
+                {
+
+                    var responseDTO = JsonSerializer.Deserialize<PineConeUpsertResponseDTO>(responseContent);
+                    return responseDTO;
+                }
+            }            
         }
 
         public async Task<PineConeQueryResponseDTO> Query(PineConeQueryRequestDTO requestDTO)
