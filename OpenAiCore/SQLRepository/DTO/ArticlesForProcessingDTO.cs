@@ -17,6 +17,6 @@ namespace OpenAiCore.SQLRepository.DTO
         public string FormattedBody { get; set; }
         
         [JsonPropertyName("SubstackURL")]
-        public string SubstackURL { get; set; }
+        public string SubstackURL { get; set; }        
     }
 }

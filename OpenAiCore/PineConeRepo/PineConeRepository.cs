@@ -11,7 +11,6 @@ namespace OpenAiCore.PineConeRepository
     public class PineConeRepository
     {
         private readonly HttpClient httpClient;
-        private const string _baseUrl = "https://embeddeddataset-ps4dv8t.svc.gcp-starter.pinecone.io";
         public PineConeRepository()
         {
             httpClient = new HttpClient();
@@ -20,8 +19,8 @@ namespace OpenAiCore.PineConeRepository
         public async Task<PineConeUpsertResponseDTO> Upsert(PineConeUpsertRequestDTO requestDTO)
         {
 
-            httpClient.DefaultRequestHeaders.Add("Api-Key", Config.Pinecone_ApiKey);
-            var url = _baseUrl + "/vectors/upsert";
+            httpClient.DefaultRequestHeaders.Add("Api-Key", Config.Pinecone_ApiKey);           
+            var url = Config.Pinecone_BaseUrl + "/vectors/upsert";
             var jsonBody = JsonSerializer.Serialize(requestDTO);
             var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             var httpResponseMessage = await httpClient.PostAsync(url, content);
@@ -42,7 +41,7 @@ namespace OpenAiCore.PineConeRepository
         public async Task<PineConeQueryResponseDTO> Query(PineConeQueryRequestDTO requestDTO)
         {
             httpClient.DefaultRequestHeaders.Add("Api-Key", Config.Pinecone_ApiKey);
-            var url = _baseUrl + "/query";
+            var url = Config.Pinecone_BaseUrl + "/query";
             var jsonBody = JsonSerializer.Serialize(requestDTO);
             var content = new StringContent(jsonBody, Encoding.UTF8, "application/json");
             var httpResponseMessage = await httpClient.PostAsync(url, content);

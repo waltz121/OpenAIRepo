@@ -16,7 +16,11 @@ namespace OpenAI.UnitTests
         OpenAiAPIRepository OpenAiAPIRepository;
         public PineConeRepositorySpecs()
         {
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "1000f1c9-9a38-471a-bdc5-483957668b0d", "connstring");
+            Config.Init("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",
+                "",
+                "08d21b42-5fa8-436e-8160-c89c8575b4dd",
+                "Data Source=PRODDBSOCIAL.NEWMERCOLA.COM;Initial Catalog=CommunityServer;User ID=webuser_communityserver;Password=w3bu$3r_c0mmun1ty$3rv3r!;Encrypt=False",
+                "https://mercoladataset-cbac0kl.svc.gcp-starter.pinecone.io");
             PineConeRepository = new PineConeRepository();
             OpenAiAPIRepository = new OpenAiAPIRepository();
         }
@@ -48,7 +52,7 @@ namespace OpenAI.UnitTests
                         ID = Guid.NewGuid().ToString(),
                         Values = QueryEmbedding,
                         Metadata =
-                             new PineConeMetaDataDTO() {  Url = "www.mercola.com", Text=SampleEmbeddedText }
+                             new PineConeMetaDataDTO() {  Url = "www.mercola.com", Text=SampleEmbeddedText, SplitType = "Test" }
                             }
                  }
 

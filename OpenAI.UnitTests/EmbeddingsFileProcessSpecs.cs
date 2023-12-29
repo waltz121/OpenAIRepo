@@ -18,7 +18,7 @@ namespace OpenAI.UnitTests
 
         public EmbeddingsFileProcessSpecs()
         {
-            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "", "");
+            Config.Init("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", @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\EmbeddedOpenAiDataset.csv", "", "", "https://mercoladataset-cbac0kl.svc.gcp-starter.pinecone.io");
             OpenAiRepo = new OpenAiAPIRepository();
         }
 
