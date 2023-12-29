@@ -26,12 +26,22 @@ namespace OpenAI.UnitTests
         PineConeRepository pineConeRepository;
         public SQLDataRepositorySpecs()
         {
-            Config.Init("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",
+            // Personal Stack
+            Config.Init("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",
                 "",
-                "08d21b42-5fa8-436e-8160-c89c8575b4dd",
+                "1000f1c9-9a38-471a-bdc5-483957668b0d",
                 "Data Source=PRODDBSOCIAL.NEWMERCOLA.COM;Initial Catalog=CommunityServer;User ID=webuser_communityserver;Password=w3bu$3r_c0mmun1ty$3rv3r!;Encrypt=False",
-                "https://mercoladataset-cbac0kl.svc.gcp-starter.pinecone.io",
+                "https://embeddeddataset-ps4dv8t.svc.gcp-starter.pinecone.io",
                 "MercolaDataset");
+
+            // OpenAi.PineCone Stack
+            //Config.Init("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",
+            //"",
+            //"08d21b42-5fa8-436e-8160-c89c8575b4dd",
+            //"Data Source=PRODDBSOCIAL.NEWMERCOLA.COM;Initial Catalog=CommunityServer;User ID=webuser_communityserver;Password=w3bu$3r_c0mmun1ty$3rv3r!;Encrypt=False",
+            //"https://mercoladataset-cbac0kl.svc.gcp-starter.pinecone.io",
+            //"MercolaDataset");
+
             sqlDataRepository = new SQLDataRepository();
             codeUtility = new StringCodeUtility();
             openAiAPIRepository = new OpenAiAPIRepository();
@@ -225,13 +235,13 @@ namespace OpenAI.UnitTests
                 SqlToJsonProcess(embeddedArticlesDTOs);
 
                 //Code to wait for 1 minute
-                Task.Delay(60000).Wait();
+                //Task.Delay(60000).Wait();
 
                 JsonToPineConeProcess(embeddedArticlesDTOs);
                 continueBatchProcessing = CheckForBatchStatus(embeddedArticlesDTOs);
                 
                 //Code to wait for 30 seconds
-                Task.Delay(30000).Wait();
+                //Task.Delay(30000).Wait();
             }
         }
 
