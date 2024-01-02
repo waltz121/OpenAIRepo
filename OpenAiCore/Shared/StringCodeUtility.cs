@@ -82,5 +82,12 @@ namespace OpenAiCore.Shared
             }
             return TextList;
         }
+        public string GetHostFromUrl(string url)
+        {
+            Uri uri = new Uri(url);
+            string host = uri.AbsoluteUri;
+            host = host.Replace("https://", "");
+            return host;
+        }
     }
 }

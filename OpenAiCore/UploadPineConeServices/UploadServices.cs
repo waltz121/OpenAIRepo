@@ -18,9 +18,11 @@ namespace OpenAiCore.UploadPineConeServices
     {
         private OpenAiAPIRepository openAiAPI;
         private PineConeRepository.PineConeRepository pineConeAPI;
+        private DataPipelineCoreUtility dataPipelineCoreUtility;
         public UploadServices() { 
             openAiAPI = new OpenAiAPIRepository();
             pineConeAPI = new PineConeRepository.PineConeRepository();
+            dataPipelineCoreUtility = new DataPipelineCoreUtility(pineConeAPI, openAiAPI, this);
         }
 
         private async void SaveToPineCone(List<EmbeddingJsonDataFrame> EmbeddedData)
@@ -28,16 +30,17 @@ namespace OpenAiCore.UploadPineConeServices
             PineConeUpsertRequestDTO requestBody = new PineConeUpsertRequestDTO()
             {
                 Vectors = new List<PineConeVectorsDTO>(),
-                Namespace = "ChatBotApp"
+                Namespace = Config.Pinecone_Namespace
             };
 
             foreach (var data in EmbeddedData)
             {
+                var embededIndex = EmbeddedData.IndexOf(data);
                 PineConeVectorsDTO vector = new PineConeVectorsDTO()
                 {
-                    ID = Guid.NewGuid().ToString(),
-                    Values = data.embedding,
-                    Metadata = new PineConeMetaDataDTO() { Url = data.url, Text = data.text }
+                    ID = dataPipelineCoreUtility.GenerateVectorID(GetHostFromUrl( data.url), Guid.NewGuid().ToString(), "300words", embededIndex ),
+                    Values = data.embedding,           
+                    Metadata = new PineConeMetaDataDTO() { Url = data.url, Text = data.text, BatchStatus = "SingleUpsert Complete", SplitType="300words" }
                 };
 
                 requestBody.Vectors.Add(vector);
@@ -76,7 +79,7 @@ namespace OpenAiCore.UploadPineConeServices
             PineConeQueryRequestDTO requestDTO = new PineConeQueryRequestDTO()
             {
                 TopK = 10,
-                Namespace = "ChatBotApp",
+                Namespace = Config.Pinecone_Namespace,
                 IncludeValues = "false",
                 IncludeMetadata = "true",
                 Vector = QueryEmbedding,
@@ -109,7 +112,7 @@ namespace OpenAiCore.UploadPineConeServices
             // Remove whitespaces from htmlInput
             htmlInput = Regex.Replace(htmlInput, @"\s+", " ");            
 
-            List<string> textList = SplitTextToLimit(200, htmlInput);
+            List<string> textList = SplitTextToLimit(300, htmlInput);
 
             if(await Is_Already_OnDb(url))
             {
@@ -129,10 +132,7 @@ namespace OpenAiCore.UploadPineConeServices
                     EmbeddedData.Add(dataFrame);
                 }
                 embeddedJsonData.EmbeddedData = EmbeddedData;
-                var jsonData = JsonConvert.SerializeObject(embeddedJsonData);
-                File.WriteAllText(@"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\OpenAiJsonDataSet.json", jsonData);
-
-             //   SaveToPineCone(EmbeddedData);
+                SaveToPineCone(EmbeddedData);
 
                 return "Success";
             }         
