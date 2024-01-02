@@ -33,8 +33,7 @@ namespace ChatBot.Controllers
         {
             ChatViewModel chatvm = new ChatViewModel();
             MessagesDTO tpm = await chatvm.SetInitialMessage();
-            chatvm.Messages = new List<MessagesDTO>();
-            chatvm.Messages.Add(tpm);
+            chatvm.Messages = [tpm];
             //return Json(chatvm);
             return Json(new { message = tpm.Content });
         }

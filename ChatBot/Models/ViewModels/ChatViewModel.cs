@@ -17,7 +17,7 @@ namespace ChatBot.Models.ViewModels
             prompt = new Prompt();
             InitialMessages = new List<MessagesDTO>()
             {
-                new MessagesDTO() { Role = "system", Content = prompt.GetOpenAiChatbotPrompt("OpenAiChatbotPromptJsonMode.txt") },
+                new MessagesDTO() { Role = "system", Content = prompt.GetOpenAiChatbotPrompt("OpenAiChatbotPromptJsonModeV2.txt") },
                 new MessagesDTO() { Role = "user", Content = "Hello!" }
             };
             InitialMessages.Reverse();
@@ -27,18 +27,13 @@ namespace ChatBot.Models.ViewModels
 
         public async Task<MessagesDTO> SetInitialMessage()
         {
-            ChatCompletionRequestDTO requestBody = new ChatCompletionRequestDTO();
-            List<MessagesDTO> messagesDTO = InitialMessages;
+            MessagesDTO messageDTO = new MessagesDTO()
+            {
+                Role = "assistant",
+                Content = "{\"Message\": \"Hello! How may I assist you today?\",\"SourceUrl\": [] }"
+            };
 
-            requestBody.Model = "gpt-3.5-turbo-1106";
-            requestBody.Messages = messagesDTO;
-            requestBody.MaxTokens = 500;
-            requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
-
-            var response = await OpenAiRepo.ChatCompletion(requestBody);
-
-            return response.Choices[0].Message;                       
-            
+            return messageDTO;
         }
 
         public async Task<ChatCompletionResponseDTO> GetBotReply()
@@ -95,7 +90,8 @@ namespace ChatBot.Models.ViewModels
             requestBody.Messages = Messages;
             requestBody.MaxTokens = 1000;
             requestBody.Model = "gpt-3.5-turbo-1106";
-            requestBody.PresencePenalty = 0.2;
+            //requestBody.PresencePenalty = 1;
+            //requestBody.FrequencyPenalty = 1;
             requestBody.ResponseFormat = new ResponseTypeDTO() { Type = "json_object" };
 
             var LastMessage = Messages.Last();

@@ -150,7 +150,9 @@ function SetMessageDisplay(response) {
         for (var i = 0; i < Sources.length; i++) {
             var url = new URL(Sources[i].url);
             var path = url.pathname;
+            var sourceExplanation = Sources[i].sourceExplanation;
             stringHtml += (i + 1) + ". <a class=\"article-links\" href='" + url + "' target='_blank'>" + path + "</a> ";
+            stringHtml += "<p class=\"source-explanation\">" + sourceExplanation +"</p>";
         }
         stringHtml = stringHtml + "</div>";
     }

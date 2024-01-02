@@ -352,6 +352,12 @@ a.article-links {
     font-stretch: extra-expanded;
 }
 
+p.source-explanation {
+    font-size: xx-small;
+    font-style: italic;
+    font-stretch: ultra-expanded;
+}
+
 /*--------------------
 Search Edits
 --------------------*/

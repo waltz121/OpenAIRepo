@@ -85,8 +85,6 @@ namespace OpenAiCore.Shared
             {
                 return new List<EmbeddedArticlesDTO>();
             }
-
-
         }
 
         public string GenerateVectorID(EmbeddedArticlesDTO embeddedArticles, int index)
