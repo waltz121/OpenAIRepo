@@ -9,8 +9,47 @@
     <form asp-controller="Upload" asp-action="Index" method="post">
         <input type="text" id="upload" name="url" placeholder="Place your url here" value="@Model.Url" />
         <button type="submit" id="uploadButton">Upload</button>
+        <span id="loading-spinner">
+            <img src="~/images/Pulse-1s-50px.gif" />
+        </span>
     </form>
     <div id="upload-results">
-        <p>@Model.ResultMessage</p>
+        <p id="upload-results-message">@Model.ResultMessage</p>
     </div>
 </div>
+
+<script>
+    function UploadResultObserver() {
+        var targetNode = document.querySelector('#upload-results');
+        var config = { attributes: true, childList: true, subtree: true };
+        var callback = function (mutationsList, observer) {
+            for (var mutation of mutationsList) {
+                if (mutation.target.innerText) {
+                    $("#loading-spinner").hide();
+                    $("#uploadButton").show();
+                }
+
+
+                if (mutation.target.innerText.includes("Success")) {
+                    $("#upload-results-message").css("color", "green");
+                }
+                else {
+                    $("#upload-results-message").css("color", "red");
+                }
+            }
+        };
+        var observer = new MutationObserver(callback);
+        observer.observe(targetNode, config);
+    }
+
+    $(document).ready(function () {
+        UploadResultObserver();
+
+        $("#uploadButton").click(function () {
+            $("#loading-spinner").show();
+            $("#uploadButton").hide();
+            $("#upload-results-message").text("");
+            
+        });
+    });
+</script>

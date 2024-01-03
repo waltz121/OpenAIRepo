@@ -18,8 +18,18 @@ namespace ChatBot.Controllers
             {
                 // Do something
                 await vm.SaveUrl();
+
+                // Code for waiting 1 minute
+                //await Task.Delay(3000);
+                //vm.ResultMessage = "Success";
             }
 
+            return View(vm);
+        }
+
+        public IActionResult BatchUpload()
+        {
+            BatchUploadViewModel vm = new BatchUploadViewModel();
             return View(vm);
         }
     }
