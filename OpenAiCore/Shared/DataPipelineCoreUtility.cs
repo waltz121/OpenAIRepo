@@ -3,6 +3,7 @@ using OpenAiCore.OpenAiRepository.DTO.OpenAi;
 using OpenAiCore.OpenAiRepository.DTO.PineCone;
 using OpenAiCore.PineConeRepository;
 using OpenAiCore.SQLRepository.DTO;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -13,6 +14,7 @@ namespace OpenAiCore.Shared
 {
     public class DataPipelineCoreUtility
     {
+        private string embedDataFilePath = @"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\MercolaEmbeddedDataset.json";
         StringCodeUtility codeUtility;
         PineConeRepository.PineConeRepository pineConeRepository;
         OpenAiAPIRepository openAiAPIRepository;
@@ -21,6 +23,11 @@ namespace OpenAiCore.Shared
             codeUtility = stringCodeUtility;
             pineConeRepository = _pineconeRepo;
             this.openAiAPIRepository = openAiAPIRepository;
+        }
+
+        public void SetEmbedDataFilePath(string path)
+        {
+            embedDataFilePath = path;
         }
         public bool CheckForBatchStatus(List<EmbeddedArticlesDTO> embeddedArticlesDTOs)
         {
@@ -67,10 +74,10 @@ namespace OpenAiCore.Shared
         {
 
             //Check if file is existing
-            if (File.Exists(@"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\MercolaEmbeddedDataset.json"))
+            if (File.Exists(embedDataFilePath))
             {
                 //Code for getting input from a json file
-                string jsonString = File.ReadAllText(@"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\MercolaEmbeddedDataset.json");
+                string jsonString = File.ReadAllText(embedDataFilePath);
                 if (jsonString != "")
                 {
                     var embeddedArticlesDTOs = JsonSerializer.Deserialize<List<EmbeddedArticlesDTO>>(jsonString);
@@ -107,7 +114,7 @@ namespace OpenAiCore.Shared
             return idstr + Domain + "-" + PostID + "-" + splitType + "-" + index.ToString();
         }
 
-        public void JsonToPineConeProcess(List<EmbeddedArticlesDTO> embeddedArticlesDTOs)
+        public async Task JsonToPineConeProcessAsync(List<EmbeddedArticlesDTO> embeddedArticlesDTOs)
         {
             if (embeddedArticlesDTOs.Count > 0)
             {
@@ -132,15 +139,13 @@ namespace OpenAiCore.Shared
                     }
                 }
 
-                Task.Run(async () =>
+                if (PineConerequestDto.Vectors.Count != 0)
                 {
-                    if (PineConerequestDto.Vectors.Count != 0)
-                    {
-                        var response = await pineConeRepository.Upsert(PineConerequestDto);
-                        SaveToJsonFile(embeddedArticlesDTOs);
-                    }
+                    var response = await pineConeRepository.Upsert(PineConerequestDto);
+                    SaveToJsonFile(embeddedArticlesDTOs);
+                }
 
-                }).GetAwaiter().GetResult();
+
             }
         }
 
@@ -148,10 +153,10 @@ namespace OpenAiCore.Shared
         {
             //Code for converting class to Json
             var json = JsonSerializer.Serialize(embeddedArticlesDTOs);
-            File.WriteAllText(@"C:\Users\walterr\Desktop\C#Apps\OpenAIApps\OpenAiCore\Files\MercolaEmbeddedDataset.json", json);
+            File.WriteAllText(embedDataFilePath, json);
         }
 
-        public void SqlToJsonProcess(List<EmbeddedArticlesDTO> embeddedArticlesDTOs)
+        public async Task SqlToJsonProcessAsync(List<EmbeddedArticlesDTO> embeddedArticlesDTOs)
         {
             int embeddedarticlesCtr = 0;
             foreach (var embeddedArticles in embeddedArticlesDTOs)
@@ -164,10 +169,8 @@ namespace OpenAiCore.Shared
 
                 if (embeddedArticles.Embeddings == null && embeddedArticles.BatchStatus == "Pending")
                 {
-                    Task.Run(async () =>
-                    {
-                        embedResponse = await openAiAPIRepository.CreateEmbeddings(embedRequest);
-                    }).GetAwaiter().GetResult();
+
+                    embedResponse = await openAiAPIRepository.CreateEmbeddings(embedRequest);
 
                     embeddedArticles.Embeddings = new List<List<float>>();
 
@@ -193,6 +196,11 @@ namespace OpenAiCore.Shared
                     break;
                 }
             }
+        }
+
+        public void DeleteDataFilePath()
+        {
+            File.Delete(embedDataFilePath);
         }
     }
 }

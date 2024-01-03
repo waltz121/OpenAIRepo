@@ -1,3 +1,4 @@
+using ChatBot.Hubs;
 using Microsoft.AspNetCore.Mvc.Routing;
 using OpenAiCore;
 
@@ -8,6 +9,8 @@ builder.Services.AddControllersWithViews();
 
 // Add configuration from appsettings.json
 builder.Configuration.AddJsonFile("appsettings.json");
+
+builder.Services.AddSignalR();
 
 var app = builder.Build();
 
@@ -37,5 +40,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
+app.MapHub<BatchUploadHub>("/batchuploadhub");
 
 app.Run();

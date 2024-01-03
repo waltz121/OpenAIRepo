@@ -58,13 +58,13 @@ namespace OpenAI.UnitTests
             var ArticlesForProcessing = sqlDataRepository.GetArticlesForProcessing(sql);
             List<EmbeddedArticlesDTO> embeddedArticlesDTOs = dataPipelineCoreUtility.checkJsonForExistingFile();
             dataPipelineCoreUtility.CheckAndSetEmbeddedArticles(ArticlesForProcessing, embeddedArticlesDTOs);
-            dataPipelineCoreUtility.SqlToJsonProcess(embeddedArticlesDTOs);
+            dataPipelineCoreUtility.SqlToJsonProcessAsync(embeddedArticlesDTOs);
         }
 
         [TestMethod]
         public void JsonToPineConePipeline()
         {
-            dataPipelineCoreUtility.JsonToPineConeProcess(dataPipelineCoreUtility.checkJsonForExistingFile());
+            dataPipelineCoreUtility.JsonToPineConeProcessAsync(dataPipelineCoreUtility.checkJsonForExistingFile());
         }
 
         [TestMethod]
@@ -78,12 +78,12 @@ namespace OpenAI.UnitTests
 
             while (continueBatchProcessing)
             {
-                dataPipelineCoreUtility.SqlToJsonProcess(embeddedArticlesDTOs);
+                dataPipelineCoreUtility.SqlToJsonProcessAsync(embeddedArticlesDTOs);
 
                 //Code to wait for 1 minute
                 //Task.Delay(60000).Wait();
 
-                dataPipelineCoreUtility.JsonToPineConeProcess(embeddedArticlesDTOs);
+                dataPipelineCoreUtility.JsonToPineConeProcessAsync(embeddedArticlesDTOs);
                 continueBatchProcessing = dataPipelineCoreUtility.CheckForBatchStatus(embeddedArticlesDTOs);
 
                 //Code to wait for 30 seconds

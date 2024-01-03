@@ -1,7 +1,26 @@
-﻿
+﻿@using ChatBot.Models.ViewModels
 @{
     ViewData["Title"] = "BatchUpload";
 }
 
-<h1>BatchUpload</h1>
-
+@model BatchUploadViewModel
+<link rel="stylesheet" type="text/css" href="loading-bar.css" />
+<script type="text/javascript" src="loading-bar.js"></script>
+<div class="BatchUpload">
+    <h1>BatchUpload</h1>
+    <div class="sqlPipeline">
+        <h3>SQL to Pinecone Pipeline</h3>
+        <div>
+            <textarea cols="50" rows="10" id="sqlStatement" placeholder="Insert SQL Statement"></textarea>
+        </div>
+        <div>
+            <button id="batch-Submit" >Submit</button>
+        </div>
+    </div>
+    <div class="Progressbar">
+        <div id="progressbar-circle" data-preset="rainbow" class="ldBar label-center" data-value="0">
+        </div>
+    </div>
+</div>
+<script src="~/js/signalr/dist/browser/signalr.js"></script>
+<script src="~/js/BatchUpload.js"></script>

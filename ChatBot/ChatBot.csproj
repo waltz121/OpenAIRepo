@@ -16,4 +16,8 @@
     <ProjectReference Include="..\OpenAiCore\OpenAiCore.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="wwwroot\Dataset\" />
+  </ItemGroup>
+
 </Project>
